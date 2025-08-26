@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}WalkRegistration{% endblock %}
+
+{% block body %}
+    <h1>WalkRegistration</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ walk_registration.id }}</td>
+            </tr>
+            <tr>
+                <th>Date_registration</th>
+                <td>{{ walk_registration.dateRegistration ? walk_registration.dateRegistration|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_walk_registration_index') }}">back to list</a>
+
+    <a href="{{ path('app_walk_registration_edit', {'id': walk_registration.id}) }}">edit</a>
+
+    {{ include('walk_registration/_delete_form.html.twig') }}
+{% endblock %}

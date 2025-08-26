@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New WalkRegistration{% endblock %}
+
+{% block body %}
+    <h1>Create new WalkRegistration</h1>
+
+    {{ include('walk_registration/_form.html.twig') }}
+
+    <a href="{{ path('app_walk_registration_index') }}">back to list</a>
+{% endblock %}

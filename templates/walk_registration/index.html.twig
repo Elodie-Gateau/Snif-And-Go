@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}WalkRegistration index{% endblock %}
+
+{% block body %}
+    <h1>WalkRegistration index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date_registration</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for walk_registration in walk_registrations %}
+            <tr>
+                <td>{{ walk_registration.id }}</td>
+                <td>{{ walk_registration.dateRegistration ? walk_registration.dateRegistration|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_walk_registration_show', {'id': walk_registration.id}) }}">show</a>
+                    <a href="{{ path('app_walk_registration_edit', {'id': walk_registration.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_walk_registration_new') }}">Create new</a>
+{% endblock %}

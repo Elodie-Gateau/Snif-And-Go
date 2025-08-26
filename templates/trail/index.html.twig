@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Trail index{% endblock %}
+
+{% block body %}
+    <h1>Trail index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Distance</th>
+                <th>Starting_point</th>
+                <th>Ending_point</th>
+                <th>Duration</th>
+                <th>Difficulty</th>
+                <th>Score</th>
+                <th>Water_point</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for trail in trails %}
+            <tr>
+                <td>{{ trail.id }}</td>
+                <td>{{ trail.name }}</td>
+                <td>{{ trail.distance }}</td>
+                <td>{{ trail.startingPoint }}</td>
+                <td>{{ trail.endingPoint }}</td>
+                <td>{{ trail.duration }}</td>
+                <td>{{ trail.difficulty }}</td>
+                <td>{{ trail.score }}</td>
+                <td>{{ trail.waterPoint }}</td>
+                <td>
+                    <a href="{{ path('app_trail_show', {'id': trail.id}) }}">show</a>
+                    <a href="{{ path('app_trail_edit', {'id': trail.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_trail_new') }}">Create new</a>
+{% endblock %}
