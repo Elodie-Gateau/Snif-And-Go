@@ -16,6 +16,14 @@ class WalkRegistration
     #[ORM\Column]
     private ?\DateTime $date_registration = null;
 
+    #[ORM\ManyToOne(inversedBy: 'walk_registration')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Dog $dog = null;
+
+    #[ORM\ManyToOne(inversedBy: 'walk_registration')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Walk $walk = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -29,6 +37,30 @@ class WalkRegistration
     public function setDateRegistration(\DateTime $date_registration): static
     {
         $this->date_registration = $date_registration;
+
+        return $this;
+    }
+
+    public function getDog(): ?Dog
+    {
+        return $this->dog;
+    }
+
+    public function setDog(?Dog $dog): static
+    {
+        $this->dog = $dog;
+
+        return $this;
+    }
+
+    public function getWalk(): ?Walk
+    {
+        return $this->walk;
+    }
+
+    public function setWalk(?Walk $walk): static
+    {
+        $this->walk = $walk;
 
         return $this;
     }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -39,6 +41,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;
+
+    /**
+     * @var Collection<int, Dog>
+     */
+    #[ORM\OneToMany(targetEntity: Dog::class, mappedBy: 'user')]
+    private Collection $dogs;
+
+    /**
+     * @var Collection<int, Trail>
+     */
+    #[ORM\OneToMany(targetEntity: Trail::class, mappedBy: 'user')]
+    private Collection $trails;
+
+    public function __construct()
+    {
+        $this->dogs = new ArrayCollection();
+        $this->trails = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -153,6 +173,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTitle(string $title): static
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Dog>
+     */
+    public function getDogs(): Collection
+    {
+        return $this->dogs;
+    }
+
+    public function addDog(Dog $dog): static
+    {
+        if (!$this->dogs->contains($dog)) {
+            $this->dogs->add($dog);
+            $dog->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDog(Dog $dog): static
+    {
+        if ($this->dogs->removeElement($dog)) {
+            // set the owning side to null (unless already changed)
+            if ($dog->getUser() === $this) {
+                $dog->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Trail>
+     */
+    public function getTrails(): Collection
+    {
+        return $this->trails;
+    }
+
+    public function addTrail(Trail $trail): static
+    {
+        if (!$this->trails->contains($trail)) {
+            $this->trails->add($trail);
+            $trail->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrail(Trail $trail): static
+    {
+        if ($this->trails->removeElement($trail)) {
+            // set the owning side to null (unless already changed)
+            if ($trail->getUser() === $this) {
+                $trail->setUser(null);
+            }
+        }
 
         return $this;
     }

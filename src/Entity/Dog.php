@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DogRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DogRepository::class)]
@@ -27,6 +29,21 @@ class Dog
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $identity_number = null;
+
+    #[ORM\ManyToOne(inversedBy: 'dogs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    /**
+     * @var Collection<int, WalkRegistration>
+     */
+    #[ORM\OneToMany(targetEntity: WalkRegistration::class, mappedBy: 'dog')]
+    private Collection $walk_registration;
+
+    public function __construct()
+    {
+        $this->walk_registration = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -89,6 +106,48 @@ class Dog
     public function setIdentityNumber(?string $identity_number): static
     {
         $this->identity_number = $identity_number;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, WalkRegistration>
+     */
+    public function getWalkRegistration(): Collection
+    {
+        return $this->walk_registration;
+    }
+
+    public function addWalkRegistration(WalkRegistration $walkRegistration): static
+    {
+        if (!$this->walk_registration->contains($walkRegistration)) {
+            $this->walk_registration->add($walkRegistration);
+            $walkRegistration->setDog($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWalkRegistration(WalkRegistration $walkRegistration): static
+    {
+        if ($this->walk_registration->removeElement($walkRegistration)) {
+            // set the owning side to null (unless already changed)
+            if ($walkRegistration->getDog() === $this) {
+                $walkRegistration->setDog(null);
+            }
+        }
 
         return $this;
     }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\WalkRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: WalkRepository::class)]
@@ -21,6 +23,21 @@ class Walk
 
     #[ORM\Column(length: 255)]
     private ?string $status = null;
+
+    /**
+     * @var Collection<int, WalkRegistration>
+     */
+    #[ORM\OneToMany(targetEntity: WalkRegistration::class, mappedBy: 'walk')]
+    private Collection $walk_registration;
+
+    #[ORM\ManyToOne(inversedBy: 'walks')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Trail $trail = null;
+
+    public function __construct()
+    {
+        $this->walk_registration = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -59,6 +76,48 @@ class Walk
     public function setStatus(string $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, WalkRegistration>
+     */
+    public function getWalkRegistration(): Collection
+    {
+        return $this->walk_registration;
+    }
+
+    public function addWalkRegistration(WalkRegistration $walkRegistration): static
+    {
+        if (!$this->walk_registration->contains($walkRegistration)) {
+            $this->walk_registration->add($walkRegistration);
+            $walkRegistration->setWalk($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWalkRegistration(WalkRegistration $walkRegistration): static
+    {
+        if ($this->walk_registration->removeElement($walkRegistration)) {
+            // set the owning side to null (unless already changed)
+            if ($walkRegistration->getWalk() === $this) {
+                $walkRegistration->setWalk(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTrail(): ?Trail
+    {
+        return $this->trail;
+    }
+
+    public function setTrail(?Trail $trail): static
+    {
+        $this->trail = $trail;
 
         return $this;
     }

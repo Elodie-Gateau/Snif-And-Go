@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TrailRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -37,6 +39,21 @@ class Trail
 
     #[ORM\Column(length: 255)]
     private ?string $water_point = null;
+
+    #[ORM\ManyToOne(inversedBy: 'trails')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    /**
+     * @var Collection<int, Walk>
+     */
+    #[ORM\OneToMany(targetEntity: Walk::class, mappedBy: 'trail')]
+    private Collection $walks;
+
+    public function __construct()
+    {
+        $this->walks = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -135,6 +152,48 @@ class Trail
     public function setWaterPoint(string $water_point): static
     {
         $this->water_point = $water_point;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Walk>
+     */
+    public function getWalks(): Collection
+    {
+        return $this->walks;
+    }
+
+    public function addWalk(Walk $walk): static
+    {
+        if (!$this->walks->contains($walk)) {
+            $this->walks->add($walk);
+            $walk->setTrail($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWalk(Walk $walk): static
+    {
+        if ($this->walks->removeElement($walk)) {
+            // set the owning side to null (unless already changed)
+            if ($walk->getTrail() === $this) {
+                $walk->setTrail(null);
+            }
+        }
 
         return $this;
     }
