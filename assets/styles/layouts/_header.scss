@@ -7,13 +7,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: $space-3 $space-6;
+    padding: $size-12 $size-24;
 
     &__brand {
         display: flex;
         min-width: 80%;
         align-items: center;
-        gap: $space-3;
+        gap: $size-12;
     }
 
     &__logo-img {

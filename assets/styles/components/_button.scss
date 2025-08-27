@@ -1,6 +1,7 @@
 @use "../utils/mixins" as *;
 
-.cta__button {
+.cta__button,
+.register__form-submit {
     @include button(
         var(--background-button),
         var(--background-button-hover),

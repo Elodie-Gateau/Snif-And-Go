@@ -1,4 +1,5 @@
 @use "../utils/variables" as *;
+@use "../utils/breakpoints" as *;
 
 body {
     background: var(--background);
@@ -18,11 +19,13 @@ h2 {
 }
 
 h1 {
-    font-size: $space-8;
+    font-size: $size-32;
+    text-align: center;
 }
 
 h2 {
-    font-size: $space-7;
+    font-size: $size-24;
+    text-align: center;
 }
 
 li {
@@ -36,4 +39,14 @@ a {
 
 a:hover {
     color: var(--text);
+}
+
+@media (min-width: $md) {
+    h1 {
+        font-size: $size-40;
+    }
+
+    h2 {
+        font-size: $size-32;
+    }
 }

@@ -1,19 +1,57 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Créer un compte
+{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+	<h1>Créer un compte</h1>
 
-    {{ form_errors(registrationForm) }}
+	{{ form_errors(registrationForm) }}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+	{{ form_start(registrationForm) }}
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+	{{ form_label(registrationForm.name) }}
+	{{ form_widget(registrationForm.name) }}
+	{% if form_errors(registrationForm.name) %}
+		<div class="register__form-error">
+			{{ form_errors(registrationForm.name) }}
+		</div>
+	{% endif %}
+
+	{{ form_label(registrationForm.firstname) }}
+	{{ form_widget(registrationForm.firstname) }}
+	{% if form_errors(registrationForm.firstname) %}
+		<div class="register__form-error">
+			{{ form_errors(registrationForm.firstname) }}
+		</div>
+	{% endif %}
+
+	{{ form_label(registrationForm.email) }}
+	{{ form_widget(registrationForm.email) }}
+	{% if form_errors(registrationForm.email) %}
+		<div class="register__form-error">
+			{{ form_errors(registrationForm.email) }}
+		</div>
+	{% endif %}
+
+
+	{{ form_label(registrationForm.plainPassword) }}
+	{{ form_widget(registrationForm.plainPassword) }}
+	{% if form_errors(registrationForm.plainPassword) %}
+		<div class="register__form-error">
+			{{ form_errors(registrationForm.plainPassword) }}
+		</div>
+	{% endif %}
+
+	{{ form_label(registrationForm.agreeTerms) }}
+	{{ form_widget(registrationForm.agreeTerms) }}
+	{% if form_errors(registrationForm.agreeTerms) %}
+		<div class="register__form-error">
+			{{ form_errors(registrationForm.agreeTerms) }}
+		</div>
+	{% endif %}
+
+
+	<button type="submit" class="register__form-submit">S'inscrire</button>
+	{{ form_end(registrationForm) }}
 {% endblock %}

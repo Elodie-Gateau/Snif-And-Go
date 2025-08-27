@@ -4,15 +4,21 @@
     $bg-color,
     $bg-color-hover,
     $text-color,
-    $padding: $space-1 $space-3
+    $padding: $size-6 $size-10,
+    $radius: $size-8
 ) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $size-10;
     padding: $padding;
     background-color: $bg-color;
     color: $text-color;
-    border-radius: $space-2;
+    border: 0;
+    border-radius: $radius;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s ease, filter 0.2s ease;
 
     &:hover {
         background-color: $bg-color-hover;
