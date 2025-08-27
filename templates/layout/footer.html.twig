@@ -1,16 +1,24 @@
-<footer>
-	<div class="logo">
-		<img src="{{ asset('images/logos/logoWhite.png') }}" alt="Logo de Snif & Go">
+<footer class="site-footer">
+	<div class="site-footer__container">
+		<img class="site-footer__logo-img" src="{{ asset('images/logos/logoWhite.png') }}" alt="Logo de Snif & Go">
 
-		<nav>
-			<ul>
-				<li><ahref="{{ path('app_home') }}">Accueil</a></li>
-				<li><ahref="{{ path('app_profile') }}">Mon profil</a></li>
-				<li><ahref="{{ path('app_admin') }}">Espace Administrateur</a></li>
-				<li><ahref="{{ path('app_logout') }}">Deconnexion</a></li>
+		<nav class="site-footer__nav">
+			<ul class="site-footer__menu">
+                <li class="site-footer__item"><a class="site-footer__link" href="{{ path('app_home') }}">Accueil</a></li>
+                {% if is_granted('ROLE_USER') %}
+                <li class="site-footer__item"><a class="site-footer__link" href="{{ path('app_profile') }}">Mon profil</a></li>
+                {% if is_granted('ROLE_ADMIN') %}
+                <li class="site-footer__item"><a class="site-footer__link" href="{{ path('app_admin') }}">Espace Administrateur</a></li>
+                {% endif %}
+                <li class="site-footer__item"><a class="site-footer__link" href="{{ path('app_logout') }}">Deconnexion</a></li>
+
+                {% else %}
+                <li class="site-footer__item"><a class="site-footer__link" href="{{ path('app_login') }}">Se connecter</a></li>
+                <li class="site-footer__item"><a class="site-footer__link" href="{{ path('app_register') }}">S'inscrire</a></li>
+                {% endif %}
 			</ul>
 		</nav>
 	</div>
-    <p>© 2025 Snif & Go - Tous droits réservés.</p>
+    <p class="site-footer__legal">© 2025 Snif & Go - Tous droits réservés.</p>
 
 </footer>

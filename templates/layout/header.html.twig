@@ -1,31 +1,47 @@
-<header>
-	<nav>
-		<div class="logo">
-			<a href="{{ path('app_home') }}">
-				<img src="{{ asset('images/logos/logoRVB-inline.png') }}" alt="Logo de Snif & Go">
-			</a>
+<header class="site-header">
 
-            <p>Plus on est de chiens, plus on rit !</p>
-		</div>
+	<div class="site-header__brand">
+		<a class="site-header__logo" href="{{ path('app_home') }}">
+			<img class="site-header__logo-img" src="{{ asset('images/logos/logoRVB-inline.png') }}" alt="Logo de Snif & Go">
+		</a>
 
-        <div>
-        
-            <ul>
-                <li><a href="{{ path('app_home') }}">Accueil</a></li>
-                {% if is_granted('ROLE_USER') %}
-                <li><a href="{{ path('app_profile') }}">Mon profil</a></li>
-                {% if is_granted('ROLE_ADMIN') %}
-                <li><a href="{{ path('app_admin') }}">Espace Administrateur</a></li>
-                {% endif %}
-                <li><a href="{{ path('app_logout') }}">Deconnexion</a></li>
+		<p class="site-header__tagline">Plus on est de chiens,
+			<br>
+			<span class="site-header__tagline-end">plus on rit !</span>
+		</p>
+	</div>
 
-                {% else %}
-                <li><a href="{{ path('app_login') }}">Se connecter</a></li>
-                <li><a href="{{ path('app_register') }}">S'inscrire</a></li>
-                {% endif %}
-            </ul>
-{# Emplacement du toggle Eco #}
-        </div>
-	</nav>
+	<div class="site-header__container">
+		<nav class="site-header__nav">
+			<ul class="site-header__menu">
+				<li class="site-header__item">
+					<a class="site-header__link" href="{{ path('app_home') }}">Accueil</a>
+				</li>
+				{% if is_granted('ROLE_USER') %}
+					<li class="site-header__item">
+						<a class="site-header__link" href="{{ path('app_profile') }}">Mon profil</a>
+					</li>
+					{% if is_granted('ROLE_ADMIN') %}
+						<li class="site-header__item">
+							<a class="site-header__link" href="{{ path('app_admin') }}">Espace Administrateur</a>
+						</li>
+					{% endif %}
+					<li class="site-header__item">
+						<a class="site-header__link" href="{{ path('app_logout') }}">Deconnexion</a>
+					</li>
+
+				{% else %}
+					<li class="site-header__item">
+						<a class="site-header__link" href="{{ path('app_login') }}">Se connecter</a>
+					</li>
+					<li class="site-header__item">
+						<a class="site-header__link" href="{{ path('app_register') }}">S'inscrire</a>
+					</li>
+				{% endif %}
+			</ul>
+		</nav>
+		{# Emplacement du toggle Eco #}
+	</div>
+
 
 </header>
