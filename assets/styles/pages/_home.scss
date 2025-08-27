@@ -1,0 +1,81 @@
+@use "../utils/variables" as *;
+
+.hero {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-7;
+    padding-bottom: $space-8;
+
+    &__img {
+        width: 100%;
+    }
+
+    &__subtitle {
+        color: var(--title-secondary);
+    }
+}
+
+.intro {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: $space-3 $space-6;
+
+    &__description {
+        display: contents;
+    }
+
+    &__content {
+        padding: $space-8 0;
+    }
+
+    &__content:nth-of-type(1),
+    &__content:nth-of-type(2) {
+        order: 1;
+    }
+    &__container {
+        order: 2;
+    }
+    &__content:nth-of-type(3) {
+        order: 3;
+    }
+    &__photo {
+        order: 4;
+        width: 100%;
+        border-radius: $space-3;
+    }
+    &__content:nth-of-type(4) {
+        order: 5;
+    }
+
+    &__container {
+        display: flex;
+        justify-content: center;
+        gap: $space-3;
+    }
+    &__img {
+        width: 40%;
+        object-fit: cover;
+    }
+}
+
+.cta {
+    display: flex;
+    justify-content: center;
+    padding: $space-7;
+}
+
+@media (min-width: 768px) {
+    .intro {
+        &__description {
+            display: block;
+        }
+        &__content,
+        &__container,
+        &__photo {
+            order: 0;
+        }
+    }
+}

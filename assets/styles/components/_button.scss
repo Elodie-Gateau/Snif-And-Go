@@ -1,0 +1,9 @@
+@use "../utils/mixins" as *;
+
+.cta__button {
+    @include button(
+        var(--background-button),
+        var(--background-button-hover),
+        var(--text-button)
+    );
+}

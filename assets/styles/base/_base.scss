@@ -1,0 +1,39 @@
+@use "../utils/variables" as *;
+
+body {
+    background: var(--background);
+    color: var(--text);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+h1,
+h2 {
+    color: var(--title);
+}
+
+h1 {
+    font-size: $space-8;
+}
+
+h2 {
+    font-size: $space-7;
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover {
+    color: var(--text);
+}

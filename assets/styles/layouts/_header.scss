@@ -1,0 +1,38 @@
+@use "../utils/variables" as *;
+
+.site-header {
+    height: 5rem;
+    width: 100%;
+    box-shadow: 0 0 10px $color-gray-200;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $space-3 $space-6;
+
+    &__brand {
+        display: flex;
+        min-width: 80%;
+        align-items: center;
+        gap: $space-3;
+    }
+
+    &__logo-img {
+        width: 6rem;
+    }
+
+    &__tagline {
+        font-family: "Fredoka";
+        font-weight: 600;
+        font-size: 1rem;
+        color: $color-secondary;
+        text-align: center;
+    }
+
+    &__tagline-end {
+        color: $color-accent;
+    }
+
+    &__container {
+        display: none;
+    }
+}

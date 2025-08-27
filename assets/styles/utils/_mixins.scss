@@ -1,0 +1,20 @@
+@use "../utils/variables" as *;
+
+@mixin button(
+    $bg-color,
+    $bg-color-hover,
+    $text-color,
+    $padding: $space-1 $space-3
+) {
+    padding: $padding;
+    background-color: $bg-color;
+    color: $text-color;
+    border-radius: $space-2;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: $bg-color-hover;
+    }
+}

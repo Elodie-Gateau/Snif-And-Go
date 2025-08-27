@@ -1,0 +1,16 @@
+@use "../utils/variables" as *;
+
+:root {
+    --background: #{$color-white};
+    --backgroundSecondary: #{$color-gray-300};
+    --backgroundTertiary: #{$color-gray-100};
+    --backgroundFooter: #{$color-accent};
+    --background-button: #{$color-secondary};
+    --background-button-hover: #{$color-secondary-dark-eco};
+    --text-button: #{$color-white};
+    --title: #{$color-secondary};
+    --title-secondary: #{$color-accent};
+    --text: #{$color-primary};
+    --secondary: #{$color-secondary};
+    --accent: #{$color-accent};
+}
