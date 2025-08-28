@@ -1,80 +1,90 @@
 @use "../utils/variables" as *;
 
-.hero {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: $size-28;
-    padding-bottom: $size-32;
-
-    &__img {
+.home-guest {
+    &__hero {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: $size-28;
+        padding-bottom: $size-32;
+    }
+    &__hero-img {
         width: 100%;
     }
 
-    &__subtitle {
+    &__hero-subtitle {
         color: var(--title-secondary);
     }
-}
 
-.intro {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding: $size-12 $size-24;
-
-    &__description {
+    &__intro {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: $size-12 $size-24;
+    }
+    &__intro-description {
         display: contents;
     }
 
-    &__content {
+    &__intro-content {
         padding: $size-32 0;
     }
 
-    &__content:nth-of-type(1),
-    &__content:nth-of-type(2) {
+    &__intro-content:nth-of-type(1),
+    &__intro-content:nth-of-type(2) {
         order: 1;
     }
-    &__container {
+    &__intro-container {
         order: 2;
     }
-    &__content:nth-of-type(3) {
+    &__intro-content:nth-of-type(3) {
         order: 3;
     }
-    &__photo {
+    &__intro-photo {
         order: 4;
         width: 100%;
         border-radius: $size-12;
     }
-    &__content:nth-of-type(4) {
+    &__intro-content:nth-of-type(4) {
         order: 5;
     }
 
-    &__container {
+    &__intro-container {
         display: flex;
         justify-content: center;
         gap: $size-12;
     }
-    &__img {
+    &__intro-img {
         width: 40%;
         object-fit: cover;
     }
-}
 
-.cta {
-    display: flex;
-    justify-content: center;
-    padding: $size-28;
+    &__cta {
+        display: flex;
+        justify-content: center;
+        padding: $size-28;
+    }
 }
-
 @media (min-width: 768px) {
-    .intro {
-        &__description {
+    .home-guest {
+        // &__intro {
+        // }
+        &__intro-description {
             display: block;
         }
-        &__content,
-        &__container,
-        &__photo {
+
+        &__intro-container {
+            width: 100%;
+            display: flex;
+        }
+
+        &__intro-img {
+            width: 45%;
+        }
+        &__intro-content,
+        &__intro-container,
+        &__intro-photo {
             order: 0;
         }
     }

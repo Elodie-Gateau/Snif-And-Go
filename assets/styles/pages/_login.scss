@@ -1,0 +1,21 @@
+@use "../utils/variables" as *;
+
+.login {
+    padding: $size-20;
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: $size-30;
+        width: 100%;
+    }
+
+    &__form-info {
+        text-align: center;
+    }
+
+    &__form-item--submit {
+        align-self: center;
+        padding: $size-30 0;
+    }
+}

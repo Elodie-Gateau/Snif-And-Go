@@ -4,31 +4,50 @@
 {% endblock %}
 
 {% block body %}
-	<section class="hero">
-		<img class="hero__img" src="{{ asset('images/hero-picture.jpg') }}" alt="Deux femmes se baladent avec leurs chiens.">
-		<h1 class="hero__title">Bienvenue sur Snif & Go</h1>
-		<h2 class="hero__subtitle">Plus de chiens, plus de fun !</h2>
-	</section>
 
-	<section class="intro">
-		<div class="intro__container">
-			<img class="intro__img" src="{{ asset('images/capture-homelog.png') }}" alt="Capture d'écran du site Snif & Go">
-			<img class="intro__img" src="{{ asset('images/capture-home.png') }}" alt="Capture d'écran du site Snif & Go">
-		</div>
-		<div class="intro__description">
-			<p class="intro__content">Snif & Go est une plateforme communautaire où chaque utilisateur peut créer un compte, inscrire son chien et participer à des balades organisées par d'autres membres.</p> 
 
-            <p class="intro__content"><strong>L'idée : transformer la promenade quotidienne en moment de partage et de convivialité.</strong></p>
+{# Page d'accueil pour utilisateurs connectés #}
+{% if app.user %}
+    <section class="home-user">
+        <h1 class="home-user__title">Bonjour {{ app.user.firstname }} {{ux_icon('fa6-solid:paw', {style: 'height: 1em'})}}</h1>
+        <p class="home-user__intro">Bienvenue sur votre espace. Ici, vous pouvez accédez à toutes les fonctionnalités de Snif & Go. </p>
+		<p class="home-user__intro">Bonne balade !</p>
 
-			<p class="intro__content">Grâce à une carte collaborative, découvrez et proposez des itinéraires adaptés aux chiens. Chaque balade précise le nombre maximum de chiens autorisés afin de garantir confort et sécurité pour tous.</p>
-
-			<p class="intro__content">Plus qu'une application, Snif & Go favorise les rencontres : entre maîtres, entre chiens et avec votre environnement local. Offrez à votre compagnon des sorties enrichissantes, et élargissez votre cercle autour d'une passion commune.</p>
-		</div>
-
-		<img class="intro__photo" src="{{ asset('images/photo-intro.jpg') }}" alt="Un homme et une femme se baladent avec leur chien">
-	</section>
-
-	<section class="cta">
-        <a class="cta__button" href="{{ path('app_register') }}">Créer un compte</a>
     </section>
+
+{# Page d'accueil pour visiteurs non connectés #}
+{% else %}
+	<section class="home-guest">
+		<div class="home-guest__hero">
+			<img class="home-guest__hero-img" src="{{ asset('images/hero-picture.jpg') }}" alt="Deux femmes se baladent avec leurs chiens.">
+			<h1 class="home-guest__hero-title">Bienvenue sur Snif & Go</h1>
+			<h2 class="home-guest__hero-subtitle">Plus de chiens, plus de fun !</h2>
+		</div>
+
+		<div class="home-guest__intro">
+			<div class="home-guest__intro-container">
+				<img class="home-guest__intro-img" src="{{ asset('images/capture-homelog.png') }}" alt="Capture d'écran du site Snif & Go">
+				<img class="home-guest__intro-img" src="{{ asset('images/capture-home.png') }}" alt="Capture d'écran du site Snif & Go">
+			</div>
+			<div class="home-guest__intro-description">
+				<p class="home-guest__intro-content">Snif & Go est une plateforme communautaire où chaque utilisateur peut créer un compte, inscrire son chien et participer à des balades organisées par d'autres membres.</p>
+
+				<p class="home-guest__intro-content">
+					<strong>L'idée : transformer la promenade quotidienne en moment de partage et de convivialité.</strong>
+				</p>
+
+				<p class="home-guest__intro-content">Grâce à une carte collaborative, découvrez et proposez des itinéraires adaptés aux chiens. Chaque balade précise le nombre maximum de chiens autorisés afin de garantir confort et sécurité pour tous.</p>
+
+				<p class="home-guest__intro-content">Plus qu'une application, Snif & Go favorise les rencontres : entre maîtres, entre chiens et avec votre environnement local. Offrez à votre compagnon des sorties enrichissantes, et élargissez votre cercle autour d'une passion commune.</p>
+			</div>
+
+			<img class="home-guest__intro-photo" src="{{ asset('images/photo-intro.jpg') }}" alt="Un homme et une femme se baladent avec leur chien">
+		</div>
+
+		<div class="home-guest__cta">
+			<a class="home-guest__cta-button" href="{{ path('app_register') }}">Créer un compte</a>
+		</div>
+	</section>
+{% endif %}
+
 {% endblock %}

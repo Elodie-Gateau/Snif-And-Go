@@ -1,4 +1,5 @@
 @use "../utils/variables" as *;
+@use "../utils/breakpoints" as *;
 
 .site-header {
     height: 5rem;
@@ -34,5 +35,24 @@
 
     &__container {
         display: none;
+    }
+}
+
+@media (min-width: $md) {
+    .site-header {
+        &__container {
+            display: block;
+            width: auto;
+        }
+
+        &__brand {
+            min-width: 30%;
+            width: 30%;
+        }
+
+        &__menu {
+            display: flex;
+            gap: $size-10;
+        }
     }
 }
