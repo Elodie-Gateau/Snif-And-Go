@@ -22,10 +22,10 @@ class Trail
     #[ORM\Column]
     private ?float $distance = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $starting_point = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $ending_point = null;
 
     #[ORM\Column]
@@ -49,6 +49,24 @@ class Trail
      */
     #[ORM\OneToMany(targetEntity: Walk::class, mappedBy: 'trail')]
     private Collection $walks;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $startAddress = null;
+
+    #[ORM\Column(length: 10, nullable: true)]
+    private ?string $startCode = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $startCity = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $endAddress = null;
+
+    #[ORM\Column(length: 10, nullable: true)]
+    private ?string $endCode = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $endCity = null;
 
     public function __construct()
     {
@@ -194,6 +212,78 @@ class Trail
                 $walk->setTrail(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStartAddress(): ?string
+    {
+        return $this->startAddress;
+    }
+
+    public function setStartAddress(string $startAddress): static
+    {
+        $this->startAddress = $startAddress;
+
+        return $this;
+    }
+
+    public function getStartCode(): ?string
+    {
+        return $this->startCode;
+    }
+
+    public function setStartCode(int $startCode): static
+    {
+        $this->startCode = $startCode;
+
+        return $this;
+    }
+
+    public function getStartCity(): ?string
+    {
+        return $this->startCity;
+    }
+
+    public function setStartCity(?string $startCity): static
+    {
+        $this->startCity = $startCity;
+
+        return $this;
+    }
+
+    public function getEndAddress(): ?string
+    {
+        return $this->endAddress;
+    }
+
+    public function setEndAddress(string $endAddress): static
+    {
+        $this->endAddress = $endAddress;
+
+        return $this;
+    }
+
+    public function getEndCode(): ?string
+    {
+        return $this->endCode;
+    }
+
+    public function setEndCode(int $endCode): static
+    {
+        $this->endCode = $endCode;
+
+        return $this;
+    }
+
+    public function getEndCity(): ?string
+    {
+        return $this->endCity;
+    }
+
+    public function setEndCity(?string $endCity): static
+    {
+        $this->endCity = $endCity;
 
         return $this;
     }

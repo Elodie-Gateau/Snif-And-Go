@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Repository\WalkRepository;
+
 
 #[Route('/walk/registration')]
 final class WalkRegistrationController extends AbstractController
@@ -22,10 +24,13 @@ final class WalkRegistrationController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_walk_registration_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new/{walkId}', name: 'app_walk_registration_new', methods: ['GET', 'POST'])]
+    public function new(int $walkId, WalkRepository $walkRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
+        $walk = $walkRepository->find($walkId);
         $walkRegistration = new WalkRegistration();
+        $walkRegistration->setWalk($walk);
+
         $form = $this->createForm(WalkRegistrationType::class, $walkRegistration);
         $form->handleRequest($request);
 
@@ -33,11 +38,11 @@ final class WalkRegistrationController extends AbstractController
             $entityManager->persist($walkRegistration);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_walk_registration_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_walk_registration_show', ['id' => $walkRegistration->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('walk_registration/new.html.twig', [
-            'walk_registration' => $walkRegistration,
+            'walk' => $walk,
             'form' => $form,
         ]);
     }
@@ -71,7 +76,7 @@ final class WalkRegistrationController extends AbstractController
     #[Route('/{id}', name: 'app_walk_registration_delete', methods: ['POST'])]
     public function delete(Request $request, WalkRegistration $walkRegistration, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$walkRegistration->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $walkRegistration->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($walkRegistration);
             $entityManager->flush();
         }
