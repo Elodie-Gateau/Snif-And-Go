@@ -1,0 +1,33 @@
+@use "../utils/variables" as *;
+@use "../utils/mixins" as *;
+
+.register__form-item {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: $size-10 0;
+    gap: $size-4;
+}
+
+.register__form-input {
+    @include form-input(var(--border-color), var(--background-input));
+    width: auto;
+}
+
+.register__form-checkbox {
+    @include form-checkbox(
+        $size-20,
+        $color-secondary,
+        var(--background-input),
+        var(--border-color)
+    );
+}
+
+.register__form-label {
+    @include form-label(var(--text));
+    width: 35%;
+}
+
+.register__form-error {
+    @include form-error(rgb(197, 18, 18));
+}

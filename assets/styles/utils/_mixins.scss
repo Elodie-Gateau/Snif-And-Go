@@ -1,5 +1,6 @@
 @use "../utils/variables" as *;
 
+// Mixin button
 @mixin button(
     $bg-color,
     $bg-color-hover,
@@ -23,4 +24,39 @@
     &:hover {
         background-color: $bg-color-hover;
     }
+}
+
+// Mixin formulaires
+
+@mixin form-input($border-color, $bg-color, $padding: $size-10) {
+    display: block;
+    width: 100%;
+    padding: $padding;
+    border: 1px solid $border-color;
+    border-radius: $size-6;
+    background-color: $bg-color;
+}
+
+@mixin form-checkbox($size, $accent, $bg, $border-color) {
+    // -moz-appearance: none;
+    // -webkit-appearance: none;
+    // -o-appearance: none;
+    width: $size;
+    height: $size;
+    accent-color: $accent;
+    background-color: $bg;
+    outline: 1px solid $border-color;
+    cursor: pointer;
+}
+
+@mixin form-label($color) {
+    display: block;
+    margin-bottom: $size-6;
+    margin-top: $size-10;
+    color: $color;
+}
+
+@mixin form-error($color-error, $margin-top: $size-4) {
+    color: $color-error;
+    margin-top: $margin-top;
 }

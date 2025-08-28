@@ -2,11 +2,13 @@
 
 :root {
     --background: #{$color-white};
-    --backgroundSecondary: #{$color-gray-300};
-    --backgroundTertiary: #{$color-gray-100};
-    --backgroundFooter: #{$color-accent};
+    --background-secondary: #{$color-gray-300};
+    --background-tertiary: #{$color-gray-100};
+    --background-footer: #{$color-accent};
     --background-button: #{$color-secondary};
     --background-button-hover: #{$color-secondary-dark-eco};
+    --background-input: #{$color-gray-150};
+    --border-color: #{$color-gray-175};
     --text-button: #{$color-white};
     --title: #{$color-secondary};
     --title-secondary: #{$color-accent};

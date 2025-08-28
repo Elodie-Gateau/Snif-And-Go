@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class RegistrationFormType extends AbstractType
 {
@@ -20,6 +21,23 @@ class RegistrationFormType extends AbstractType
     {
         $builder
 
+            // CHAMP : CIVILITE
+
+            ->add('title', ChoiceType::class, [
+                'choices' => [
+                    'Sélectionner une civilité' => null,
+                    'Madame' => 'Mme',
+                    'Monsieur' => 'M'
+                ],
+                'attr' => ['class' => 'register__form-input'],
+                'label' => 'Civilité :',
+                'label_attr' => ['class' => 'register__form-label'],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => "Veuillez choisir une civilité",
+                    ])
+                ],
+            ])
             // CHAMP : NOM
 
             ->add('name', null, [
@@ -115,11 +133,9 @@ class RegistrationFormType extends AbstractType
                         'message' => 'Vous devez accepter les conditions pour vous inscrire',
                     ]),
                 ],
-                'label' => 'Accepter les conditions : ',
-                'label_attr' => ['class' => 'inline-flex items-center text-gray-700 dark:text-white  text-sm font-bold my-2 cursor-pointer'],
-                'row_attr' => ['class' => 'flex items-center'],
-                'label_html' => true,
-                'attr' => ['class' => 'ml-2'],
+                'label' => "J'accepte les conditions d'utilisation : ",
+                'label_attr' => ['class' => 'register__form-label'],
+                'attr' => ['class' => 'register__form-checkbox'],
             ])
         ;
     }
@@ -128,6 +144,7 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'required' => false
         ]);
     }
 }
