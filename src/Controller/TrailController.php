@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Trail;
+use App\Entity\Photo;
 use App\Form\TrailType;
 use App\Repository\TrailRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,6 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
+
 
 #[Route('/trail')]
 final class TrailController extends AbstractController
@@ -23,17 +26,50 @@ final class TrailController extends AbstractController
     }
 
     #[Route('/new', name: 'app_trail_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $trail = new Trail();
         $form = $this->createForm(TrailType::class, $trail);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($this->getUser()) {
+                $trail->setUser($this->getUser());
+            }
+
+
+            $files = $form->get('photoFiles')->getData();
+
+            if ($files) {
+                foreach ($files as $imageFile) {
+                    $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+                    $imageFile->move(
+                        $this->getParameter('images_directory'),
+                        $newFilename
+                    );
+
+                    $photo = new Photo();
+                    $photo->setName($newFilename);
+                    $photo->setDate(new \DateTime());
+                    $photo->setUser($this->getUser());
+                    $photo->setTrail($trail);
+
+                    $trail->addPhoto($photo);
+
+                    $entityManager->persist($photo);
+                }
+            }
             $entityManager->persist($trail);
             $entityManager->flush();
+            return $this->redirectToRoute('app_trail_index');
+        }
 
-            return $this->redirectToRoute('app_trail_index', [], Response::HTTP_SEE_OTHER);
+        if ($form->isSubmitted() && !$form->isValid()) {
+            foreach ($form->getErrors(true, true) as $e) {
+                $this->addFlash('error', $e->getMessage());
+            }
         }
 
         return $this->render('trail/new.html.twig', [
@@ -71,7 +107,7 @@ final class TrailController extends AbstractController
     #[Route('/{id}', name: 'app_trail_delete', methods: ['POST'])]
     public function delete(Request $request, Trail $trail, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$trail->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $trail->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($trail);
             $entityManager->flush();
         }

@@ -60,3 +60,15 @@
     color: $color-error;
     margin-top: $margin-top;
 }
+
+// Mixin cards
+
+@mixin card($width) {
+    width: $width;
+    background: var(--background);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: $size-10;
+    box-shadow: 0 5px 8px $color-gray-175;
+}

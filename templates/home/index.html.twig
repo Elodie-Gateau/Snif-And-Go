@@ -56,9 +56,9 @@
 					<a class="home-user__dog-button" href="{{ path('app_dog_new') }}">Ajouter</a>
 				</div>
 
-					{% if dogs|length > 0 %}
-						{% for dog in dogs %}
-							<div class="home-user__dog--card">
+				{% if dogs|length > 0 %}
+					{% for dog in dogs %}
+						<div class="home-user__dog--card">
 							{% if dog.sex == "female" %}
 								<div class="home-user__dog-photo-female">
 									{% if dog.photo %}
@@ -77,51 +77,139 @@
 								</div>
 							{% endif %}
 							<p class="home-user__dog-name">{{ dog.name }}</p>
-							</div>
-						{% endfor %}
+						</div>
+					{% endfor %}
 
-					
+
 				{% else %}
 					<p>Aucun chien n'est encore inscrit</p>
 				{% endif %}
-			
 
-			<div class="home-user__trail"></div>
-		</section>
 
-		{# Page d'accueil pour visiteurs non connectés #}
-	{% else %}
-		<section class="home-guest">
-			<div class="home-guest__hero">
-				<img class="home-guest__hero-img" src="{{ asset('images/hero-picture.jpg') }}" alt="Deux femmes se baladent avec leurs chiens.">
-				<h1 class="home-guest__hero-title">Bienvenue sur Snif & Go</h1>
-				<h2 class="home-guest__hero-subtitle">Plus de chiens, plus de fun !</h2>
-			</div>
+				<div class="home-user__trail">
+					<div class="home-user__trail-wrapper">
+						<h2 class="home-user__trail-title">Rechercher une balade</h2>
+						<a class="home-trail-button" href="{{ path('app_trail_new') }}">Ajouter un itinéraire</a>
+					</div>
 
-			<div class="home-guest__intro">
-				<div class="home-guest__intro-container">
-					<img class="home-guest__intro-img" src="{{ asset('images/capture-homelog.png') }}" alt="Capture d'écran du site Snif & Go">
-					<img class="home-guest__intro-img" src="{{ asset('images/capture-home.png') }}" alt="Capture d'écran du site Snif & Go">
+					<div class="home-user__trail-search">
+						<form class="home-user__trail-form" method="get" action="{{ path('app_home') }}">
+							<div class="home-user__trail-search-bar">
+								{{ form_widget(form.search) }}
+								<button class="home-user__trail-search--button">Rechercher</button>
+
+								<button class="home-user__trail-search--link" type="button" id="toggle-advanced" aria-expanded="false" aria-controls="trail-advanced">
+									Afficher plus de critères
+								</button>
+							</div>
+
+							<div id="trail-advanced" class="home-user__trail-search--advanced hidden">
+								<div class="home-user__trail-search--criteria">
+									{{ form_row(form.difficulty) }}
+									{{ form_row(form.minDistance) }}
+									{{ form_row(form.maxDistance) }}
+									{{ form_row(form.minDuration) }}
+									{{ form_row(form.maxDuration) }}
+									{{ form_row(form.minScore) }}
+									{{ form_row(form.maxScore) }}
+								</div>
+							</div>
+						</form>
+					</div>
+
+
+					{% if foundTrails is defined and foundTrails|length %}
+						<div class="home-user__trail-search--results">
+
+							{% for trail in foundTrails %}
+								<div class="home-user__trail-card">
+									{% if trail.photos|length > 0 %}
+										<img class="home-user__trail-photo" src="{{ asset('uploads/images/' ~ trail.photos[0].name) }}" alt="Photo de l'itinéraire {{ trail.name }}">
+									{% else %}
+										{{ux_icon('f7:photo', {class: 'home-user__trail-photo'})}}
+									{% endif %}
+									<p class="home-user__trail-name">
+										<strong>{{ trail.name }}</strong>
+									</p>
+
+									<div class="home-user__trail-description">
+										<div class="home-user__trail-item">
+											{{ux_icon('material-symbols:distance-rounded', {class: 'home-user__trail-icon'})}}
+											<p class="home-user__trail-content">{{ trail.startCity }}
+												</p>
+										</div>
+									<div class="home-user__trail-description">
+										<div class="home-user__trail-item">
+											{{ux_icon('game-icons:path-distance', {class: 'home-user__trail-icon'})}}
+											<p class="home-user__trail-content">{{ trail.distance }}
+												km{{ trail.distance > 1 ? "s" : "" }}</p>
+										</div>
+										<div class="home-user__trail-item">
+											{{ux_icon('mingcute:time-fill', {class: 'home-user__trail-icon'})}}
+											<p class="home-user__trail-content">{{ trail.duration }}
+												min</p>
+										</div>
+										<div class="home-user__trail-item">
+											{{ux_icon('game-icons:strong', {class: 'home-user__trail-icon'})}}
+											<p class="home-user__trail-content">{{ trail.difficulty }}</p>
+										</div>
+										<div class="home-user__trail-item">
+											{{ux_icon('mdi:like', {class: 'home-user__trail-icon'})}}
+											<div class="home-user__trail-content">
+												
+												{% for i in 1.. trail.score %}
+													{{ux_icon('material-symbols:star-rounded', {class: 'home-user__trail-score'})}}
+												{% endfor %}
+												{% for i in 1.. (5 - trail.score) %}
+													{{ux_icon('material-symbols:star-outline-rounded', {class: 'home-user__trail-score'})}}
+												{% endfor %}
+											</div>
+										</div>
+									</div>
+								
+								</div>
+							
+
+						</div>
+							{% endfor %}
+					{% endif %}
+
 				</div>
-				<div class="home-guest__intro-description">
-					<p class="home-guest__intro-content">Snif & Go est une plateforme communautaire où chaque utilisateur peut créer un compte, inscrire son chien et participer à des balades organisées par d'autres membres.</p>
+			</section>
 
-					<p class="home-guest__intro-content">
-						<strong>L'idée : transformer la promenade quotidienne en moment de partage et de convivialité.</strong>
-					</p>
-
-					<p class="home-guest__intro-content">Grâce à une carte collaborative, découvrez et proposez des itinéraires adaptés aux chiens. Chaque balade précise le nombre maximum de chiens autorisés afin de garantir confort et sécurité pour tous.</p>
-
-					<p class="home-guest__intro-content">Plus qu'une application, Snif & Go favorise les rencontres : entre maîtres, entre chiens et avec votre environnement local. Offrez à votre compagnon des sorties enrichissantes, et élargissez votre cercle autour d'une passion commune.</p>
+			{# Page d'accueil pour visiteurs non connectés #}
+		{% else %}
+			<section class="home-guest">
+				<div class="home-guest__hero">
+					<img class="home-guest__hero-img" src="{{ asset('images/hero-picture.jpg') }}" alt="Deux femmes se baladent avec leurs chiens.">
+					<h1 class="home-guest__hero-title">Bienvenue sur Snif & Go</h1>
+					<h2 class="home-guest__hero-subtitle">Plus de chiens, plus de fun !</h2>
 				</div>
 
-				<img class="home-guest__intro-photo" src="{{ asset('images/photo-intro.jpg') }}" alt="Un homme et une femme se baladent avec leur chien">
-			</div>
+				<div class="home-guest__intro">
+					<div class="home-guest__intro-container">
+						<img class="home-guest__intro-img" src="{{ asset('images/capture-homelog.png') }}" alt="Capture d'écran du site Snif & Go">
+						<img class="home-guest__intro-img" src="{{ asset('images/capture-home.png') }}" alt="Capture d'écran du site Snif & Go">
+					</div>
+					<div class="home-guest__intro-description">
+						<p class="home-guest__intro-content">Snif & Go est une plateforme communautaire où chaque utilisateur peut créer un compte, inscrire son chien et participer à des balades organisées par d'autres membres.</p>
 
-			<div class="home-guest__cta">
-				<a class="home-guest__cta-button" href="{{ path('app_register') }}">Créer un compte</a>
-			</div>
-		</section>
-	{% endif %}
+						<p class="home-guest__intro-content">
+							<strong>L'idée : transformer la promenade quotidienne en moment de partage et de convivialité.</strong>
+						</p>
 
-{% endblock %}
+						<p class="home-guest__intro-content">Grâce à une carte collaborative, découvrez et proposez des itinéraires adaptés aux chiens. Chaque balade précise le nombre maximum de chiens autorisés afin de garantir confort et sécurité pour tous.</p>
+
+						<p class="home-guest__intro-content">Plus qu'une application, Snif & Go favorise les rencontres : entre maîtres, entre chiens et avec votre environnement local. Offrez à votre compagnon des sorties enrichissantes, et élargissez votre cercle autour d'une passion commune.</p>
+					</div>
+
+					<img class="home-guest__intro-photo" src="{{ asset('images/photo-intro.jpg') }}" alt="Un homme et une femme se baladent avec leur chien">
+				</div>
+
+				<div class="home-guest__cta">
+					<a class="home-guest__cta-button" href="{{ path('app_register') }}">Créer un compte</a>
+				</div>
+			</section>
+		{% endif %}
+
+	{% endblock %}

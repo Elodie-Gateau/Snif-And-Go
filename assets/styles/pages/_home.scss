@@ -146,6 +146,24 @@
     &__dog-name {
         font-weight: 800;
     }
+
+    &__trail {
+        background: var(--background-secondary);
+        border-radius: $size-10;
+        padding: $size-40 $size-10;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: $size-20;
+        align-items: center;
+    }
+
+    &__trail-search--results {
+        display: flex;
+        flex-direction: column;
+        gap: $size-20;
+        align-items: center;
+    }
 }
 
 @media (min-width: 768px) {

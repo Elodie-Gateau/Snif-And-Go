@@ -34,9 +34,16 @@ class Walk
     #[ORM\JoinColumn(nullable: false)]
     private ?Trail $trail = null;
 
+    /**
+     * @var Collection<int, Photo>
+     */
+    #[ORM\OneToMany(targetEntity: Photo::class, mappedBy: 'walk')]
+    private Collection $photos;
+
     public function __construct()
     {
         $this->walk_registration = new ArrayCollection();
+        $this->photos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -118,6 +125,36 @@ class Walk
     public function setTrail(?Trail $trail): static
     {
         $this->trail = $trail;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Photo>
+     */
+    public function getPhotos(): Collection
+    {
+        return $this->photos;
+    }
+
+    public function addPhoto(Photo $photo): static
+    {
+        if (!$this->photos->contains($photo)) {
+            $this->photos->add($photo);
+            $photo->setWalk($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhoto(Photo $photo): static
+    {
+        if ($this->photos->removeElement($photo)) {
+            // set the owning side to null (unless already changed)
+            if ($photo->getWalk() === $this) {
+                $photo->setWalk(null);
+            }
+        }
 
         return $this;
     }

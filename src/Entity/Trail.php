@@ -68,9 +68,35 @@ class Trail
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $endCity = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $nameSearch = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $startCitySearch = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $endCitySearch = null;
+
+    /**
+     * @var Collection<int, Photo>
+     */
+    #[ORM\OneToMany(mappedBy: 'trail', targetEntity: Photo::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $photos;
+
     public function __construct()
     {
         $this->walks = new ArrayCollection();
+        $this->photos = new ArrayCollection();
+    }
+
+    private function normalize(string $value): string
+    {
+        if ($value === null) {
+            return '';
+        }
+        $value = strtolower($value);
+        $value = str_replace(['-', ' ', '_', '.'], '', $value);
+        return $value;
     }
 
     public function getId(): ?int
@@ -86,7 +112,7 @@ class Trail
     public function setName(string $name): static
     {
         $this->name = $name;
-
+        $this->nameSearch = $this->normalize($name);
         return $this;
     }
 
@@ -233,7 +259,7 @@ class Trail
         return $this->startCode;
     }
 
-    public function setStartCode(int $startCode): static
+    public function setStartCode(?string $startCode): static
     {
         $this->startCode = $startCode;
 
@@ -248,7 +274,7 @@ class Trail
     public function setStartCity(?string $startCity): static
     {
         $this->startCity = $startCity;
-
+        $this->startCitySearch = $this->normalize($startCity);
         return $this;
     }
 
@@ -269,7 +295,7 @@ class Trail
         return $this->endCode;
     }
 
-    public function setEndCode(int $endCode): static
+    public function setEndCode(?string $endCode): static
     {
         $this->endCode = $endCode;
 
@@ -284,6 +310,72 @@ class Trail
     public function setEndCity(?string $endCity): static
     {
         $this->endCity = $endCity;
+        $this->endCitySearch = $this->normalize($endCity);
+        return $this;
+    }
+
+    public function getNameSearch(): ?string
+    {
+        return $this->nameSearch;
+    }
+
+    public function setNameSearch(string $nameSearch): static
+    {
+        $this->nameSearch = $nameSearch;
+
+        return $this;
+    }
+
+    public function getStartCitySearch(): ?string
+    {
+        return $this->startCitySearch;
+    }
+
+    public function setStartCitySearch(string $startCitySearch): static
+    {
+        $this->startCitySearch = $startCitySearch;
+
+        return $this;
+    }
+
+    public function getEndCitySearch(): ?string
+    {
+        return $this->endCitySearch;
+    }
+
+    public function setEndCitySearch(string $endCitySearch): static
+    {
+        $this->endCitySearch = $endCitySearch;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Photo>
+     */
+    public function getPhotos(): Collection
+    {
+        return $this->photos;
+    }
+
+    public function addPhoto(Photo $photo): static
+    {
+        if (!$this->photos->contains($photo)) {
+            $this->photos->add($photo);
+            $photo->setTrail($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhoto(Photo $photo): static
+    {
+        if ($this->photos->removeElement($photo)) {
+            // set the owning side to null (unless already changed)
+            if ($photo->getTrail() === $this) {
+                $photo->setTrail(null);
+            }
+        }
 
         return $this;
     }

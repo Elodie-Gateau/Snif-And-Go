@@ -4,10 +4,12 @@ function postalToCity(postalInputId, cityInputId, cityDatalistId) {
     const cityDatalist = document.getElementById(cityDatalistId);
 
     if (!postalInput || !cityInput || !cityDatalist) return;
+    if (postalInput.dataset.bound === "1") return; // évite double écouteurs quand Turbo revisite la page
+    postalInput.dataset.bound = "1";
 
     postalInput.addEventListener("input", () => {
         const code = postalInput.value.trim();
-
+        console.log(code);
         if (code.length !== 5) return;
 
         fetch(

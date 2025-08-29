@@ -9,6 +9,11 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\All;
+
+
 
 class TrailType extends AbstractType
 {
@@ -37,9 +42,22 @@ class TrailType extends AbstractType
             ->add('difficulty')
             ->add('score')
             ->add('water_point')
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
+
+            ->add('photoFiles', FileType::class, [
+                'label' => 'Photo',
+                'mapped' => false,
+                'multiple' => true,
+                'required' => false,
+                'attr' => ['accept' => 'image/*'],
+                'constraints' => [
+                    new All([
+                        new File([
+                            'maxSize' => '5M',
+                            'mimeTypes' => ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
+                            'mimeTypesMessage' => 'Formats acceptés : jpeg, png, webp, gif (≤ 5 Mo).',
+                        ])
+                    ])
+                ],
             ])
         ;
     }
@@ -48,7 +66,7 @@ class TrailType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Trail::class,
-            'required' => false
+
         ]);
     }
 }
