@@ -40,6 +40,9 @@ class Dog
     #[ORM\OneToMany(targetEntity: WalkRegistration::class, mappedBy: 'dog')]
     private Collection $walk_registration;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $photo = null;
+
     public function __construct()
     {
         $this->walk_registration = new ArrayCollection();
@@ -148,6 +151,18 @@ class Dog
                 $walkRegistration->setDog(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?string $photo): static
+    {
+        $this->photo = $photo;
 
         return $this;
     }

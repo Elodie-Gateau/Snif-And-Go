@@ -13,36 +13,78 @@
 				{{ app.user.firstname }}
 				{{ux_icon('fa6-solid:paw', {style: 'height: 1em'})}}</h1>
 			<div class="home-user__intro">
-				<img src="{{ asset('images/photo-accueil-user.webp') }}" alt="Photo d'un chiot heureux" class="home-user__intro-img">
 				<div class="home-user__intro-wrapper">
-					<p class="home-user__intro">Bienvenue sur votre espace. Ici, vous pouvez accédez à toutes les fonctionnalités de Snif & Go.
+					<p class="home-user__intro-content">Bienvenue sur votre espace. Ici, vous pouvez accédez à toutes les fonctionnalités de Snif & Go.
 					</p>
-					<p class="home-user__intro">Bonne balade !</p>
+					<p class="home-user__intro-content">Bonne balade !</p>
 				</div>
 			</div>
 
 			<div class="home-user__walk">
+				<h2 class="home-user__walk-title">Les prochaines balades</h2>
 				<div class="home-user__walk--card">
 					{% if nextWalks|length > 0 %}
 						{% for walk in nextWalks %}
+							<div class="home-user__walk-wrapper">
+								<p class="home-user__walk-accent">{{ walk.date|date('d/m/Y') }}</p>
+								<p class="home-user__walk-content">
+									<strong>{{ walk.trail.name }}</strong>
+								</p>
+								<p class="home-user__walk-content">{{ walk.trail.startCity }}</p>
+							</div>
+							<div class="home-user__walk-wrapper">
+								<a class="home-user__walk-button" href="{{ path('app_walk_registration_new', { walkId: walk.id }) }}">S'inscrire</a>
+								<p class="home-user__walk-accent">{{ walk.maxDogs - walk.walkRegistration|length }}
+									place{{ walk.maxDogs - walk.walkRegistration|length > 1 ? "s" : "" }}
+									restantes</p>
 
-						<p class="home-user__walk-accent">{{ walk.date|date('d/m/Y') }}</p>
-						<p class="home-user__walk-content"><strong>{{ walk.trail.name }}</strong></p>
-						<p class="home-user__walk-content">{{ walk.trail.startCity }}</p>
-						<p class="home-user__walk-accent">{{ walk.maxDogs - walk.walkRegistration|length }} places restantes</p>
-						<a class="btn" href="{{ path('app_walk_registration_new', { walkId: walk.id }) }}">S'inscrire</a>
+							</div>
 						{% endfor %}
-				</div>
-					{% else %}
-						<p>Aucune balade prévue</p>
-					{% endif %}
+					</div>
+				{% else %}
+					<p>Aucune balade prévue</p>
+				{% endif %}
 
-					{% if nextWalks|length > 4 %}
+				{% if nextWalks|length > 4 %}
 					<a class="btn" href="{{ path('app_walk_registration_index') }}">Voir plus</a>
-						{% endif %}
+				{% endif %}
 			</div>
 
-			<div class="home-user__dog"></div>
+			<div class="home-user__dog">
+				<div class="home-user__dog-wrapper">
+					<h2 class="home-user__dog-title">Mes chiens</h2>
+					<a class="home-user__dog-button" href="{{ path('app_dog_new') }}">Ajouter</a>
+				</div>
+
+					{% if dogs|length > 0 %}
+						{% for dog in dogs %}
+							<div class="home-user__dog--card">
+							{% if dog.sex == "female" %}
+								<div class="home-user__dog-photo-female">
+									{% if dog.photo %}
+										<img class="home-user__dog-photo" src="{{ asset('uploads/images/' ~ dog.photo)}}">
+									{% else %}
+										{{ux_icon('streamline-plump:dog-1-remix', {class: 'home-user__dog-photo'})}}
+									{% endif %}
+								</div>
+							{% elseif dog.sex == "male" %}
+								<div class="home-user__dog-photo-male">
+									{% if dog.photo %}
+										<img class="home-user__dog-photo" src="{{ asset('uploads/images/' ~ dog.photo)}}">
+									{% else %}
+										{{ux_icon('streamline-plump:dog-1-remix', {class: 'home-user__dog-photo'})}}
+									{% endif %}
+								</div>
+							{% endif %}
+							<p class="home-user__dog-name">{{ dog.name }}</p>
+							</div>
+						{% endfor %}
+
+					
+				{% else %}
+					<p>Aucun chien n'est encore inscrit</p>
+				{% endif %}
+			
 
 			<div class="home-user__trail"></div>
 		</section>

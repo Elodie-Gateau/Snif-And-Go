@@ -66,6 +66,88 @@
         padding: $size-28;
     }
 }
+
+.home-user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $size-20 0;
+    width: 100%;
+    gap: $size-20;
+
+    &__intro {
+        background: center/cover no-repeat
+            url("../images/photo-accueil-user.webp");
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        border-radius: $size-10;
+
+        .home-user__intro-wrapper {
+            width: 40%;
+            background-color: rgba($color-white, 0.85);
+            padding: $size-16;
+            text-align: center;
+        }
+    }
+
+    &__walk {
+        background: var(--background-secondary);
+        border-radius: $size-10;
+        padding: $size-30 $size-10;
+        width: 100%;
+    }
+
+    &__walk-title {
+        padding: $size-20 $size-10;
+    }
+
+    &__dog {
+        background: var(--background-secondary);
+        border-radius: $size-10;
+        padding: $size-40 $size-20;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: $size-20;
+        align-items: center;
+    }
+
+    &__dog-wrapper {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        padding: $size-10;
+    }
+
+    &__dog-photo-female {
+        border: $size-8 solid var(--title-secondary);
+        border-radius: 50%;
+        padding: $size-8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__dog-photo-male {
+        border: $size-8 solid var(--title);
+        border-radius: 50%;
+        padding: $size-8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    &__dog-photo {
+        width: 100%;
+        border-radius: 50%;
+    }
+
+    &__dog-name {
+        font-weight: 800;
+    }
+}
+
 @media (min-width: 768px) {
     .home-guest {
         // &__intro {
