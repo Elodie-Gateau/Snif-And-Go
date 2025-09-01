@@ -46,3 +46,7 @@
 .home-user__trail-search--advanced-error {
     @include form-error($color-error);
 }
+
+.walk-register__desc-select {
+    @include form-multiselect(var(--border-color), var(--background-input));
+}

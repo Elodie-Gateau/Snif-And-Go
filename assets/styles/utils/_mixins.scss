@@ -37,6 +37,16 @@
     background-color: $bg-color;
 }
 
+@mixin form-multiselect($border-color, $bg-color, $padding: $size-10) {
+    display: block;
+    width: 100%;
+    padding: $padding;
+    border: 1px solid $border-color;
+    border-radius: $size-6;
+    background-color: $bg-color;
+    height: auto;
+}
+
 @mixin form-checkbox($size, $accent, $bg, $border-color) {
     // -moz-appearance: none;
     // -webkit-appearance: none;

@@ -1,4 +1,7 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+<div class="walk-register__desc-item">
+	<p class="walk-register__desc-title">{{ form_label(form.dog)}}</p>
+	{{ form_widget(form.dog) }}
+	<button class="walk-register__button">{{ button_label|default('Valider') }}</button>
+</div>
+	{{ form_end(form) }}

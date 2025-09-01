@@ -15,6 +15,10 @@ class WalkRegistration
 
     #[ORM\Column]
     private ?\DateTime $date_registration = null;
+    public function __construct()
+    {
+        $this->date_registration = new \DateTime();
+    }
 
     #[ORM\ManyToOne(inversedBy: 'walk_registration')]
     #[ORM\JoinColumn(nullable: false)]

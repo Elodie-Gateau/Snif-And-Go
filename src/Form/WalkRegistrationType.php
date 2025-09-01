@@ -9,22 +9,22 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class WalkRegistrationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('date_registration')
+
             ->add('dog', EntityType::class, [
+                'label' => 'Je souhaite inscrire',
+                'label_attr' => ['class' => 'walk-register__desc-title'],
+                'attr' => ['class' => 'walk-register__desc-select'],
                 'class' => Dog::class,
-                'choice_label' => 'id',
-            ])
-            ->add('walk', EntityType::class, [
-                'class' => Walk::class,
-                'choice_label' => 'id',
-            ])
-        ;
+                'choice_label' => 'name',
+                'multiple' => true
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
