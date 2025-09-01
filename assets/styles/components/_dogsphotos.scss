@@ -1,0 +1,45 @@
+@use "../utils/variables" as *;
+@use "../utils/mixins" as *;
+@use "../utils/breakpoints" as *;
+
+.home-user__dog-photo-female,
+.home-user__dog-photo-male {
+    --avatar-size: $size-56;
+    width: var(--avatar-size);
+    height: var(--avatar-size);
+    aspect-ratio: 1 / 1;
+    flex: 0 0 var(--avatar-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-user__dog-photo-female,
+.walk-register__desc-photo-female {
+    @include photoFemale;
+}
+
+.home-user__dog-photo-male,
+.walk-register__desc-photo-male {
+    @include photoMale;
+}
+
+.home-user__dog-photo,
+.walk-register__desc-photo {
+    @include photo;
+    object-fit: cover;
+    display: block;
+}
+
+@media (min-width: $md) {
+    .home-user__dog-photo-female,
+    .home-user__dog-photo-male {
+        --avatar-size: $size-72;
+    }
+}
+@media (min-width: $lg) {
+    .home-user__dog-photo-female,
+    .home-user__dog-photo-male {
+        --avatar-size: $size-88;
+    }
+}

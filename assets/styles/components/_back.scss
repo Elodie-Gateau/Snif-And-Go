@@ -1,0 +1,5 @@
+@use "../utils/mixins" as *;
+
+.walk-register__back {
+    @include back;
+}

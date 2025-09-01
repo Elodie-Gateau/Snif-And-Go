@@ -21,7 +21,7 @@
 			</div>
 
 			<div class="home-user__walk">
-				<h2 class="home-user__walk-title">Les prochaines balades</h2>
+				<h2 class="home-user__walk-title">Les prochaines balades disponibles</h2>
 				<div class="home-user__walk--card">
 					{% if nextWalks|length > 0 %}
 						{% for walk in nextWalks %}
@@ -77,6 +77,12 @@
 								</div>
 							{% endif %}
 							<p class="home-user__dog-name">{{ dog.name }}</p>
+							{% if dogNextWalks[dog.id] %}
+							<div class="home-user__dog-infos">
+							<p class="home-user__dog-subtitle">{{ux_icon('fa6-solid:paw', {class: 'home-user__dog-icon'})}} Prochaine balade {{ux_icon('fa6-solid:paw', {class: 'home-user__dog-icon'})}}</p>
+							<p class="home-user__dog-content">{{ dogNextWalks[dog.id].walk.date|format_datetime('medium','short', locale='fr')}}</p>
+							</div>
+							{% endif %}
 						</div>
 					{% endfor %}
 

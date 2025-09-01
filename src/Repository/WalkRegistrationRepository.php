@@ -2,6 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\Dog;
+use App\Entity\User;
+
 use App\Entity\WalkRegistration;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,6 +19,23 @@ class WalkRegistrationRepository extends ServiceEntityRepository
         parent::__construct($registry, WalkRegistration::class);
     }
 
+
+    public function findNextWalkByDog(Dog $dog, User $user): ?WalkRegistration
+    {
+        return $this->createQueryBuilder('wr')
+            ->join('wr.walk', 'w')
+            ->join('wr.dog', 'd')
+            ->andWhere('wr.dog = :dog')
+            ->andWhere('d.user = :user')
+            ->andWhere('w.date >= :now')
+            ->setParameter('dog', $dog)
+            ->setParameter('user', $user)
+            ->setParameter('now', new \DateTimeImmutable())
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+}
 //    /**
 //     * @return WalkRegistration[] Returns an array of WalkRegistration objects
 //     */
@@ -40,4 +60,3 @@ class WalkRegistrationRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-}

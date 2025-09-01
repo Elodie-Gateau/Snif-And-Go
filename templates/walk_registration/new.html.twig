@@ -1,81 +1,85 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inscription à une balade{% endblock %}
+{% block title %}Inscription à une balade
+{% endblock %}
 
 {% block body %}
-<section class="walk-register">
-    <h1 class="walk-register__title">Valider l'inscription</h1>
+	<section class="walk-register">
+		<h1 class="walk-register__title">Valider l'inscription</h1>
 
-    <div class="walk-register__desc">
-        <h2 class="walk-register__subtitle">Balade du {{ walk.date|format_datetime('full', 'short', locale: 'fr')  }}</h2>
+		<div class="walk-register__desc">
+			<h2 class="walk-register__subtitle">Balade du
+				{{ walk.date|format_datetime('full', 'short', locale: 'fr')  }}</h2>
 
-        <div class="walk-register__desc-item">
-            <p class="walk-register__desc-title">Itinéraire</p>
-            <p class="walk-register__desc-content">{{ walk.trail.name }}</p>
-        </div>
-        <div class="walk-register__desc-item">
-            <p class="walk-register__desc-title">Distance</p>
-            <p class="walk-register__desc-content">{{ walk.trail.distance }} km{{ walk.trail.distance > 1 ? "s" : "" }}</p>
-        </div>
-        <div class="walk-register__desc-item">
-            <p class="walk-register__desc-title">Durée</p>
-            <p class="walk-register__desc-content">{{ walk.trail.duration| format_number(style: 'duration', locale: 'en') }}</p>
-        </div>
-        <div class="walk-register__desc-item">
-            <p class="walk-register__desc-title">Difficulté</p>
-            <p class="walk-register__desc-content">{{ walk.trail.difficulty }}</p>
-        </div>
-        <div class="walk-register__desc-item">
-            <p class="walk-register__desc-title">Point d'eau</p>
-            <p class="walk-register__desc-content">{{ walk.trail.waterPoint }}</p>
-        </div>
-        <div class="walk-register__desc-item">
-            <p class="walk-register__desc-title">Point de départ</p>
-            <div class="walk-register__desc-wrapper">
-                <p class="walk-register__desc-content">{{ walk.trail.startAddress }}</p>
-                <p class="walk-register__desc-content">{{ walk.trail.startCode }}</p>
-                <p class="walk-register__desc-content">{{ walk.trail.startCity }}</p>
-            </div>
-        </div>
-        <div class="walk-register__desc-item">
-            <p class="walk-register__desc-title">Point d'arrivée</p>
-            <div class="walk-register__desc-wrapper">
-                <p class="walk-register__desc-content">{{ walk.trail.endAddress }}</p>
-                <p class="walk-register__desc-content">{{ walk.trail.endCode }}</p>
-                <p class="walk-register__desc-content">{{ walk.trail.endCity }}</p>
-            </div>
-        </div>
+			<div class="walk-register__desc-item">
+				<p class="walk-register__desc-title">Itinéraire</p>
+				<p class="walk-register__desc-content">{{ walk.trail.name }}</p>
+			</div>
+			<div class="walk-register__desc-item">
+				<p class="walk-register__desc-title">Distance</p>
+				<p class="walk-register__desc-content">{{ walk.trail.distance }}
+					km{{ walk.trail.distance > 1 ? "s" : "" }}</p>
+			</div>
+			<div class="walk-register__desc-item">
+				<p class="walk-register__desc-title">Durée (en heures)</p>
+				<p class="walk-register__desc-content">{{ walk.trail.duration| format_number(style: 'duration', locale: 'en') }}</p>
+			</div>
+			<div class="walk-register__desc-item">
+				<p class="walk-register__desc-title">Difficulté</p>
+				<p class="walk-register__desc-content">{{ walk.trail.difficulty }}</p>
+			</div>
+			<div class="walk-register__desc-item">
+				<p class="walk-register__desc-title">Point d'eau</p>
+				<p class="walk-register__desc-content">{{ walk.trail.waterPoint }}</p>
+			</div>
+			<div class="walk-register__desc-item">
+				<p class="walk-register__desc-title">Point de départ</p>
+				<div class="walk-register__desc-wrapper">
+					<p class="walk-register__desc-content">{{ walk.trail.startAddress }}</p>
+					<p class="walk-register__desc-content">{{ walk.trail.startCode }}</p>
+					<p class="walk-register__desc-content">{{ walk.trail.startCity }}</p>
+				</div>
+			</div>
+			<div class="walk-register__desc-item">
+				<p class="walk-register__desc-title">Point d'arrivée</p>
+				<div class="walk-register__desc-wrapper">
+					<p class="walk-register__desc-content">{{ walk.trail.endAddress }}</p>
+					<p class="walk-register__desc-content">{{ walk.trail.endCode }}</p>
+					<p class="walk-register__desc-content">{{ walk.trail.endCity }}</p>
+				</div>
+			</div>
 
-        <div class="walk-register__desc-item">
-            <p class="walk-register__desc-title">Nombre de chien maximum</p>
-            <p class="walk-register__desc-content">{{ walk.maxDogs }}</p>
-        </div>
-        <div class="walk-register__desc-item">
-            <p class="walk-register__desc-title">Les chiens inscrits</p>
-            <div class="walk-register__desc-wrapper">
-                {% if walk.walkRegistration|length > 0 %}
-                {% for register in walk.walkRegistration %}
-                <div class="walk-register__desc-container">
-                    {% if register.dog.photo %}
-                        <img class="walk-register__desc-photo" src="{{ asset('uploads/images/' ~ register.dog.photo)}}">
-                    {% else %}
-						{{ux_icon('streamline-plump:dog-1-remix', {class: 'walk-register__desc-photo'})}}
+			<div class="walk-register__desc-item">
+				<p class="walk-register__desc-title">Nombre de chien maximum</p>
+				<p class="walk-register__desc-content">{{ walk.maxDogs }}</p>
+			</div>
+			<div class="walk-register__desc-item">
+				<p class="walk-register__desc-title">Les chiens inscrits</p>
+				<div class="walk-register__desc-wrapper">
+					{% if walk.walkRegistration|length > 0 %}
+						{% for register in walk.walkRegistration %}
+							<div class="walk-register__desc-container">
+								<div class="walk-register__desc-photo{{ register.dog.sex == " female"? " -female": " -male"}}">
+									{% if register.dog.photo %}
+										<img class="walk-register__desc-photo" src="{{ asset('uploads/images/' ~ register.dog.photo)}}">
+									{% else %}
+										{{ux_icon('streamline-plump:dog-1-remix', {class: 'walk-register__desc-photo'})}}
+									{% endif %}
+								</div>
+								<p class="walk-register__desc-content">{{ register.dog.name }}</p>
+							</div>
+						{% endfor %}
+
+					{% else %}
+						<p class="walk-register__desc-content">Aucun chien n'est encore inscrit à cette balade</p>
 					{% endif %}
-                    <p class="walk-register__desc-content">{{ register.dog.name }}</p>
-                </div>
-                {% endfor %}
+				</div>
+			</div>
 
-                {% else %}
-                <p class="walk-register__desc-content">Aucun chien n'est encore inscrit à cette balade</p>
-                {% endif %}
-            </div>    
-        </div>
-    
-   
 
-    {{ include('walk_registration/_form.html.twig') }}
- </div>
-    <a href="{{ path('app_home') }}">Retour</a>
+			{{ include('walk_registration/_form.html.twig') }}
+		</div>
+		<a class="walk-register__back" href="{{ path('app_home') }}">Retour</a>
 
-</section>
+	</section>
 {% endblock %}

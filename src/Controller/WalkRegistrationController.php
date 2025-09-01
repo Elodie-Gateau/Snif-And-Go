@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Entity\Walk;
 use App\Entity\WalkRegistration;
 use App\Form\WalkRegistrationType;
+use App\Repository\DogRepository;
 use App\Repository\WalkRegistrationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,20 +28,27 @@ final class WalkRegistrationController extends AbstractController
     }
 
     #[Route('/new/{walkId}', name: 'app_walk_registration_new', methods: ['GET', 'POST'])]
-    public function new(int $walkId, WalkRepository $walkRepository, Request $request, EntityManagerInterface $entityManager): Response
+    public function new(int $walkId, WalkRepository $walkRepository, DogRepository $dogRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $walk = $walkRepository->find($walkId);
         $walkRegistration = new WalkRegistration();
         $walkRegistration->setWalk($walk);
 
-        $form = $this->createForm(WalkRegistrationType::class, $walkRegistration);
+        $availableDogs = $dogRepository->findAvailableForWalk($this->getUser(), $walk);
+
+
+        $form = $this->createForm(
+            WalkRegistrationType::class,
+            $walkRegistration,
+            ['dogs' => $availableDogs]
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($walkRegistration);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_walk_registration_show', ['id' => $walkRegistration->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('walk_registration/new.html.twig', [

@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
 
 class WalkRegistrationType extends AbstractType
 {
@@ -22,8 +22,10 @@ class WalkRegistrationType extends AbstractType
                 'label_attr' => ['class' => 'walk-register__desc-title'],
                 'attr' => ['class' => 'walk-register__desc-select'],
                 'class' => Dog::class,
+                'choices' => $options['dogs'],
                 'choice_label' => 'name',
-                'multiple' => true
+                'placeholder' => 'Choisissez votre chien',
+                'invalid_message' => 'Sélection invalide.',
             ]);
     }
 
@@ -31,6 +33,7 @@ class WalkRegistrationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => WalkRegistration::class,
+            'dogs' => []
         ]);
     }
 }

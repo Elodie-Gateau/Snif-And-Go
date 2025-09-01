@@ -1,4 +1,5 @@
 @use "../utils/variables" as *;
+@use "../utils/breakpoints" as *;
 
 .home-guest {
     &__hero {
@@ -121,30 +122,25 @@
         padding: $size-10;
     }
 
-    &__dog-photo-female {
-        border: $size-8 solid var(--title-secondary);
-        border-radius: 50%;
-        padding: $size-8;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    &__dog-photo-male {
-        border: $size-8 solid var(--title);
-        border-radius: 50%;
-        padding: $size-8;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    &__dog-photo {
-        width: 100%;
-        border-radius: 50%;
-    }
-
     &__dog-name {
         font-weight: 800;
+    }
+
+    &__dog-infos {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: $size-10;
+    }
+
+    &__dog-subtitle {
+        color: var(--accent);
+        font-weight: 600;
+    }
+
+    &__dog-icon {
+        width: $size-16;
+        color: inherit;
     }
 
     &__trail {
@@ -218,10 +214,8 @@
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: $md) {
     .home-guest {
-        // &__intro {
-        // }
         &__intro-description {
             display: block;
         }

@@ -20,7 +20,7 @@
     }
 
     &__dog--card {
-        @include card(70%);
+        @include card(85%);
         padding: $size-20 $size-30;
         flex-direction: column;
         justify-content: space-between;

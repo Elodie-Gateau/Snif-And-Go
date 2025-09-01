@@ -1,7 +1,17 @@
 {{ form_start(form) }}
 <div class="walk-register__desc-item">
 	<p class="walk-register__desc-title">{{ form_label(form.dog)}}</p>
-	{{ form_widget(form.dog) }}
-	<button class="walk-register__button">{{ button_label|default('Valider') }}</button>
+	{% set dogsChoices = form.dog.vars.choices is not empty %}
+	{% if not dogsChoices %}
+		<p class="walk-register__desc-content">
+			Vous n'avez pas de chiens disponibles pour la balade.
+		</p>
+		{% do form.dog.setRendered %}
+	{% else %}
+		{{ form_widget(form.dog) }}
+		<button class="walk-register__button">{{ button_label|default('Valider') }}</button>
+	{% endif %}
+
+
 </div>
-	{{ form_end(form) }}
+{{ form_end(form) }}

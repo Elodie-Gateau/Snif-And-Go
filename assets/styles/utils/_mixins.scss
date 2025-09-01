@@ -82,3 +82,43 @@
     border-radius: $size-10;
     box-shadow: 0 5px 8px $color-gray-175;
 }
+
+// Mixin link back
+
+@mixin back() {
+    font-weight: 600;
+    color: var(--accent);
+    text-align: center;
+    padding: $size-10 $size-20;
+    background: var(--background);
+    border-radius: $size-10;
+    box-shadow: 0 5px 8px $color-gray-175;
+}
+
+// Mixin Dog photos
+
+@mixin photo {
+    width: 100%;
+    border-radius: 50%;
+    height: 100%;
+}
+
+@mixin photoMale {
+    border: $size-8 solid var(--title);
+    color: var(--title);
+    border-radius: 50%;
+    padding: $size-8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin photoFemale {
+    border: $size-8 solid var(--title-secondary);
+    color: var(--title-secondary);
+    border-radius: 50%;
+    padding: $size-8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

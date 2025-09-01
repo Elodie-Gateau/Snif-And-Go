@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\DogRepository;
 use App\Repository\WalkRepository;
+use App\Repository\WalkRegistrationRepository;
 use App\Form\TrailSearchType;
 use App\Repository\TrailRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,13 +18,26 @@ final class HomeController extends AbstractController
     public function index(
         WalkRepository $walkRepository,
         DogRepository $dogRepository,
+        WalkRegistrationRepository $walkRegistrationRepository,
         Request $request,
         TrailRepository $trailRepository
     ): Response {
 
         $nextWalks = $walkRepository->findNext(4);
 
-        $dogs = $dogRepository->findAll();
+        $currentUser = $this->getUser();
+
+        if ($currentUser) {
+            $dogs = $dogRepository->findByUser($currentUser);
+            foreach ($dogs as $dog) {
+                $wr = $walkRegistrationRepository->findNextWalkByDog($dog, $currentUser);
+                $dogNextWalks[$dog->getId()] = $wr;
+            }
+        } else {
+            $dogs = [];
+            $dogNextWalk = "";
+        }
+
 
         $searchForm = $this->createForm(TrailSearchType::class);
         $searchForm->handleRequest($request);
@@ -46,6 +60,7 @@ final class HomeController extends AbstractController
         return $this->render('home/index.html.twig', [
             'nextWalks'   => $nextWalks,
             'dogs'        => $dogs,
+            'dogNextWalks' => $dogNextWalks,
             'form'        => $searchForm->createView(),
             'foundTrails' => $foundTrails,
         ]);
