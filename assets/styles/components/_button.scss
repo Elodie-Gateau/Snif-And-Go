@@ -4,7 +4,9 @@
 .register__form-submit,
 .login__form-submit,
 .home-user__walk-button,
-.home-user__dog-button {
+.home-user__dog-button,
+.home-user__trail-search--button,
+.home-user__trail-button {
     @include button(
         var(--background-button),
         var(--background-button-hover),

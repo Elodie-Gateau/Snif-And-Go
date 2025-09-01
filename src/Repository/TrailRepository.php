@@ -72,23 +72,22 @@ class TrailRepository extends ServiceEntityRepository
 
         return $queryBuilder
             ->orderBy('trail.name', 'ASC')
+            ->setMaxResults(8)
             ->getQuery()
             ->getResult();
     }
     //    /**
     //     * @return Trail[] Returns an array of Trail objects
     //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('t.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findAllLimit(int $limit): array
+    {
+        return $this->createQueryBuilder('trail')
+            ->orderBy('trail.id', 'ASC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
     //    public function findOneBySomeField($value): ?Trail
     //    {

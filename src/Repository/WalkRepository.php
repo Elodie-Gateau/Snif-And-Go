@@ -21,10 +21,10 @@ class WalkRepository extends ServiceEntityRepository
     //     */
     public function findNext(int $limit = 10): array
     {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.date >= :now')
+        return $this->createQueryBuilder('walk')
+            ->andWhere('walk.date >= :now')
             ->setParameter('now', new \DateTimeImmutable())
-            ->orderBy('w.date', 'ASC')
+            ->orderBy('walk.date', 'ASC')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();

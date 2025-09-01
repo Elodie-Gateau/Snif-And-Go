@@ -39,7 +39,7 @@ final class HomeController extends AbstractController
         ) {
             $foundTrails = $trailRepository->search($criteria);
         } else {
-            $foundTrails = $trailRepository->findAll();
+            $foundTrails = $trailRepository->findAllLimit(8);
         }
 
 
