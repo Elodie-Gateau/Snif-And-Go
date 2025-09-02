@@ -21,15 +21,6 @@ class DogType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        // $allowedSizes = $options['allowed_sizes'];
-
-        $sizeLabels = [
-            'small'  => 'Petit gabarit',
-            'medium' => 'Moyen gabarit',
-            'large'  => 'Grand gabarit',
-            'giant'  => 'Très grand gabarit',
-        ];
-
         $builder
             ->add('name', null, [
                 'attr' => ['class' => 'add-dog__form-input'],
@@ -49,7 +40,7 @@ class DogType extends AbstractType
             ->add('birth_date', DateType::class, [
                 'widget' => 'choice',
                 'years' => range(2005, 2030),
-                'attr' => ['class' => 'add-dog__form-input'],
+                'attr' => ['class' => 'add-dog__form-dateselect'],
                 'label' => 'Date de naissance :',
                 'label_attr' => ['class' => 'add-dog__form-label'],
             ])
@@ -68,48 +59,22 @@ class DogType extends AbstractType
                     ])
                 ],
             ])
-            ->add('dogBreed', EntityType::class, [
-                'class' => DogBreed::class,
-                'query_builder' => function (DogBreedRepository $r) {
-                    return $r->createQueryBuilder('b')
-                        ->orderBy('b.name_fr', 'ASC');
-                },
-                'choice_label' => 'name_fr',
-                'group_by' => function (DogBreed $breed) use ($sizeLabels) {
-                    return $sizeLabels[$breed->getSize()] ?? ucfirst($breed->getSize());
-                },
+            ->add('dogBreed', DogBreedAutocompleteField::class)
 
-                // 'choice_filter' => function ($breed) use ($allowedSizes) {
-                //     if (!$breed instanceof DogBreed) {
-                //         return true; // placeholder / valeurs techniques : on ne filtre pas
-                //     }
-                //     if (empty($allowedSizes)) {
-                //         return true; // pas de filtre demandé
-                //     }
-                //     return in_array($breed->getSize(), $allowedSizes, true);
-                // },
-
-                'attr' => ['class' => 'add-dog__form-input'],
-                'label' => 'Race du chien :',
-                'label_attr' => ['class' => 'add-dog__form-label'],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => "Veuillez choisir une race",
-                    ])
-                ],
-            ])
             ->add(
                 'identity_number',
                 null,
                 [
                     'attr' => ['class' => 'add-dog__form-input'],
-                    'label' => 'Nom du chien :',
+                    'label' => "Numéro d'identification du chien :",
                     'label_attr' => ['class' => 'add-dog__form-label'],
                 ],
             )
 
             ->add('photo', FileType::class, [
                 'label' => 'Photo de profil',
+                'label_attr' => ['class' => 'add-dog__form-label'],
+                'attr' => ['class' => 'add-dog__form-input'],
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
@@ -128,8 +93,7 @@ class DogType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Dog::class,
-            // 'allowed_sizes' => [],
+            'required' => false
         ]);
-        // $resolver->setAllowedTypes('allowed_sizes', 'array');
     }
 }

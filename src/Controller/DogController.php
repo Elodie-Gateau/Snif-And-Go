@@ -27,6 +27,7 @@ final class DogController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $dog = new Dog();
+        $dog->setUser($this->getUser());
         $form = $this->createForm(DogType::class, $dog);
         $form->handleRequest($request);
 
@@ -44,13 +45,12 @@ final class DogController extends AbstractController
                     $this->getParameter('images_directory'),
                     $newFilename
                 );
-                // On ajoute à notre objet article
                 $dog->setPhoto($newFilename);
             }
             $entityManager->persist($dog);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_dog_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('dog/new.html.twig', [

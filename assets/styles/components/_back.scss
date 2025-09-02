@@ -1,5 +1,6 @@
 @use "../utils/mixins" as *;
 
-.walk-register__back {
+.walk-register__back,
+.add-dog__back {
     @include back;
 }
