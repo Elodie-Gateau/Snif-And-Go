@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Dog{% endblock %}
+{% block title %}Ajouter un chien{% endblock %}
 
 {% block body %}
-    <h1>Create new Dog</h1>
+<section class="add-dog">
+    <h1 class="add-dog__title">Ajouter un chien</h1>
 
     {{ include('dog/_form.html.twig') }}
 
-    <a href="{{ path('app_dog_index') }}">back to list</a>
+    <a href="{{ path('app_dog_index') }}">Retour</a>
+</section>
 {% endblock %}

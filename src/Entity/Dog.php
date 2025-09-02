@@ -43,6 +43,9 @@ class Dog
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photo = null;
 
+    #[ORM\ManyToOne(inversedBy: 'dogs')]
+    private ?DogBreed $dogBreed = null;
+
     public function __construct()
     {
         $this->walk_registration = new ArrayCollection();
@@ -163,6 +166,18 @@ class Dog
     public function setPhoto(?string $photo): static
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getDogBreed(): ?DogBreed
+    {
+        return $this->dogBreed;
+    }
+
+    public function setDogBreed(?DogBreed $dogBreed): static
+    {
+        $this->dogBreed = $dogBreed;
 
         return $this;
     }
