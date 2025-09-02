@@ -3,15 +3,20 @@
 namespace App\Form;
 
 use App\Entity\Trail;
-use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\File as FileConstraint;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Form\FormInterface;
+
 
 
 
@@ -20,35 +25,186 @@ class TrailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('distance')
-            ->add('startAddress')
-            ->add('startCode', null, [
-                'attr' => ['id' => 'start-postal-code']
+            ->add('name', null, [
+                'attr' => [
+                    'class' => 'add-trail__form-input',
+                    'placeholder' => "Ex : Le sentier des Chênes, ..."
+                ],
+                'label' => "Nom de l'itinéraire :",
+
+                'label_attr' => ['class' => 'add-trail__form-label'],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => "Veuillez saisir un nom",
+                    ]),
+                    new Length([
+                        'min' => 2,
+                        'minMessage' => 'Votre nom doit contenir au moins {{ limit }} caractères',
+                        'max' => 4096,
+                    ]),
+                ],
             ])
-            ->add('startCity', TextType::class, [
-                'attr' => ['id' => 'start-city'],
-                'required' => true,
+            ->add('inputMode', ChoiceType::class, [
+                'attr' => ['class' => 'add-trail__form-input-select'],
+                'label_attr' => ['class' => 'add-trail__form-label-select'],
+                'expanded' => true,
+                'multiple' => false,
+                'choices' => [
+                    'Importer un fichier GPX' => 'gpx',
+                    "Saisir les adresses de départ et d'arrivée" => 'manual',
+                ],
+                'data' => 'gpx',
+                'label' => "Choisissez une méthode pour renseigner l'itinéraire",
             ])
-            ->add('endAddress')
-            ->add('endCode', null, [
-                'attr' => ['id' => 'end-postal-code']
-            ])
-            ->add('endCity', TextType::class, [
-                'attr' => ['id' => 'end-city'],
+
+            ->add('gpxFile', FileType::class, [
+                'attr' => ['class' => 'add-trail__form-input'],
+                'label_attr' => ['class' => 'add-trail__form-label'],
+                'mapped' => false,
                 'required' => false,
+                'label' => 'Importer un fichier GPX',
+                'attr' => ['accept' => '.gpx,application/gpx+xml'],
+                'constraints' => [
+                    new FileConstraint([
+                        'groups' => ['gpx'],
+                        'maxSize' => '10M',
+                        'mimeTypes' => ['application/gpx+xml', 'application/xml', 'text/xml'],
+                        'mimeTypesMessage' => 'Fichier GPX invalide',
+                    ]),
+                    new NotBlank([
+                        'groups' => ['gpx'],
+                        'message' => "Veuillez télécharger un fichier",
+                    ]),
+                ],
+                'row_attr' => ['data-section' => 'gpx'],
             ])
-            ->add('duration')
-            ->add('difficulty')
-            ->add('score')
-            ->add('water_point')
+
+            ->add('startAddress', null, [
+                'attr' => ['class' => 'add-trail__form-input'],
+                'label_attr' => ['class' => 'add-trail__form-label'],
+                'label' => 'Adresse',
+                'constraints' => [
+                    new NotBlank([
+                        'groups' => ['manual'],
+                        'message' => "Veuillez saisir une adresse",
+                    ]),
+                    new Length([
+                        'groups' => ['manual'],
+                        'min' => 2,
+                        'minMessage' => 'Votre adresse doit contenir au moins {{ limit }} caractères',
+                        'max' => 4096,
+                    ]),
+                ],
+            ])
+
+            ->add('startCode', null, [
+                'attr' => ['class' => 'add-trail__form-input'],
+                'label_attr' => ['class' => 'add-trail__form-label code'],
+                'label' => 'Code Postal',
+                'constraints' => [
+                    new NotBlank([
+                        'groups' => ['manual'],
+                        'message' => "Veuillez saisir un code postal",
+                    ]),
+                    new Length([
+                        'groups' => ['manual'],
+                        'min' => 5,
+                        'minMessage' => 'Votre code postal doit contenir {{ limit }} chiffres',
+                        'maxMessage' => 'Votre code postal doit contenir {{ limit }} chiffres',
+                        'max' => 5,
+                    ]),
+                ],
+            ])
+
+            ->add('startCity', null, [
+                'attr' => ['class' => 'add-trail__form-input'],
+                'label_attr' => ['class' => 'add-trail__form-label'],
+                'label' => 'Ville',
+                'constraints' => [
+                    new NotBlank([
+                        'groups' => ['manual'],
+                        'message' => "Veuillez saisir une ville",
+                    ]),
+                    new Length([
+                        'groups' => ['manual'],
+                        'min' => 2,
+                        'minMessage' => 'Votre nom doit contenir au moins {{ limit }} caractères',
+                        'max' => 4096,
+                    ]),
+                ],
+            ])
+
+            ->add('endAddress', null, [
+                'attr' => ['class' => 'add-trail__form-input'],
+                'label_attr' => ['class' => 'add-trail__form-label'],
+                'label' => 'Adresse',
+                'constraints' => [
+                    new NotBlank([
+                        'groups' => ['manual'],
+                        'message' => "Veuillez saisir un nom",
+                    ]),
+                    new Length([
+                        'groups' => ['manual'],
+                        'min' => 2,
+                        'minMessage' => 'Votre nom doit contenir au moins {{ limit }} caractères',
+                        'max' => 4096,
+                    ]),
+                ],
+            ])
+            ->add('endCode', null, [
+                'attr' => ['class' => 'add-trail__form-input'],
+                'label_attr' => ['class' => 'add-trail__form-label'],
+                'label' => 'Code Postal',
+                'constraints' => [
+                    new NotBlank([
+                        'groups' => ['manual'],
+                        'message' => "Veuillez saisir un nom",
+                    ]),
+                    new Length([
+                        'groups' => ['manual'],
+                        'min' => 2,
+                        'minMessage' => 'Votre nom doit contenir au moins {{ limit }} caractères',
+                        'max' => 4096,
+                    ]),
+                ],
+            ])
+            ->add('endCity', null, [
+                'attr' => ['class' => 'add-trail__form-input'],
+                'label_attr' => ['class' => 'add-trail__form-label'],
+                'label' => 'Ville',
+                'constraints' => [
+                    new NotBlank([
+                        'groups' => ['manual'],
+                        'message' => "Veuillez saisir un nom",
+                    ]),
+                    new Length([
+                        'groups' => ['manual'],
+                        'min' => 2,
+                        'minMessage' => 'Votre nom doit contenir au moins {{ limit }} caractères',
+                        'max' => 4096,
+                    ]),
+                ],
+            ])
+
+            ->add('water_point', ChoiceType::class, [
+                'attr' => ['class' => 'add-trail__form-input'],
+                'label_attr' => ['class' => 'add-trail__form-label'],
+                'multiple' => false,
+                'choices' => [
+                    'Oui' => 'true',
+                    'Non' => 'false',
+                    'Je ne sais pas' => null
+                ],
+                'label' => "Existe-t-il un point d'eau sur le trajet ?"
+            ])
 
             ->add('photoFiles', FileType::class, [
                 'label' => 'Photo',
+                'label_attr' => ['class' => 'add-trail__form-label'],
                 'mapped' => false,
                 'multiple' => true,
                 'required' => false,
-                'attr' => ['accept' => 'image/*'],
+                'attr' => ['accept' => 'image/*', 'class' => 'add-trail__form-input'],
                 'constraints' => [
                     new All([
                         new File([
@@ -66,6 +222,15 @@ class TrailType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Trail::class,
+            'required' => false,
+            'validation_groups' => function (FormInterface $form) {
+                $data = $form->getData();
+                $mode = $data?->getInputMode();
+                if (!$mode) {
+                    $mode = $form->has('inputMode') ? ($form->get('inputMode')->getData() ?? 'gpx') : 'gpx';
+                }
+                return ['Default', $mode];
+            },
 
         ]);
     }

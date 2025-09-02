@@ -4,7 +4,7 @@ function postalToCity(postalInputId, cityInputId, cityDatalistId) {
     const cityDatalist = document.getElementById(cityDatalistId);
 
     if (!postalInput || !cityInput || !cityDatalist) return;
-    if (postalInput.dataset.bound === "1") return; // évite double écouteurs quand Turbo revisite la page
+    if (postalInput.dataset.bound === "1") return;
     postalInput.dataset.bound = "1";
 
     postalInput.addEventListener("input", () => {

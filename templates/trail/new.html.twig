@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Trail{% endblock %}
+{% block title %}Créer un nouvel itinéraire{% endblock %}
 
 {% block body %}
-    <h1>Create new Trail</h1>
+<section class="add-trail">
+    <h1 class="add-trail__title">Créer un nouvel itinéraire</h1>
 
     {{ include('trail/_form.html.twig') }}
 
-    <a href="{{ path('app_trail_index') }}">back to list</a>
+    <a class="add-trail__back" href="{{ path('app_trail_index') }}">Retour</a>
+</section>
 {% endblock %}

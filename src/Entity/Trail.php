@@ -19,16 +19,10 @@ class Trail
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $distance = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $starting_point = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $ending_point = null;
-
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $duration = null;
 
     #[ORM\Column(length: 255)]
@@ -68,13 +62,13 @@ class Trail
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $endCity = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $nameSearch = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $startCitySearch = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $endCitySearch = null;
 
     /**
@@ -82,6 +76,24 @@ class Trail
      */
     #[ORM\OneToMany(mappedBy: 'trail', targetEntity: Photo::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $photos;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $gpxFile = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $inputMode = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $startLat = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $startLon = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $endLat = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $endLon = null;
 
     public function __construct()
     {
@@ -124,30 +136,6 @@ class Trail
     public function setDistance(float $distance): static
     {
         $this->distance = $distance;
-
-        return $this;
-    }
-
-    public function getStartingPoint(): ?string
-    {
-        return $this->starting_point;
-    }
-
-    public function setStartingPoint(string $starting_point): static
-    {
-        $this->starting_point = $starting_point;
-
-        return $this;
-    }
-
-    public function getEndingPoint(): ?string
-    {
-        return $this->ending_point;
-    }
-
-    public function setEndingPoint(string $ending_point): static
-    {
-        $this->ending_point = $ending_point;
 
         return $this;
     }
@@ -376,6 +364,78 @@ class Trail
                 $photo->setTrail(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getGpxFile(): ?string
+    {
+        return $this->gpxFile;
+    }
+
+    public function setGpxFile(?string $gpxFile): static
+    {
+        $this->gpxFile = $gpxFile;
+
+        return $this;
+    }
+
+    public function getInputMode(): ?string
+    {
+        return $this->inputMode;
+    }
+
+    public function setInputMode(?string $inputMode): static
+    {
+        $this->inputMode = $inputMode;
+
+        return $this;
+    }
+
+    public function getStartLat(): ?float
+    {
+        return $this->startLat;
+    }
+
+    public function setStartLat(?float $startLat): static
+    {
+        $this->startLat = $startLat;
+
+        return $this;
+    }
+
+    public function getStartLon(): ?float
+    {
+        return $this->startLon;
+    }
+
+    public function setStartLon(?float $startLon): static
+    {
+        $this->startLon = $startLon;
+
+        return $this;
+    }
+
+    public function getEndLat(): ?float
+    {
+        return $this->endLat;
+    }
+
+    public function setEndLat(?float $endLat): static
+    {
+        $this->endLat = $endLat;
+
+        return $this;
+    }
+
+    public function getEndLon(): ?float
+    {
+        return $this->endLon;
+    }
+
+    public function setEndLon(?float $endLon): static
+    {
+        $this->endLon = $endLon;
 
         return $this;
     }

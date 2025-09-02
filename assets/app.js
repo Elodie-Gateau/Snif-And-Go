@@ -1,28 +1,40 @@
-import "./bootstrap.js";
+// import "./bootstrap.js";
+import { initCityAutocomplete } from "./js/cities.js";
+
 import "./styles/app.css";
 import "./js/trail-search.js";
-import { initCityAutocomplete } from "./js/cities.js";
 
 function init() {
     // ne bind que si le formulaire est présent
-    if (document.getElementById("trail_startCode")) {
-        initCityAutocomplete();
-        console.log("[cities] init ok");
+    const start = document.getElementById("trail_startCode");
+    const end = document.getElementById("trail_endCode");
+    if (start || end) {
+        try {
+            initCityAutocomplete();
+            console.log("[cities] init ok");
+        } catch (e) {
+            console.error("[cities] init failed:", e);
+        }
+    } else {
+        console.log("[cities] no form on page");
     }
 }
 
-// 1) au premier chargement + à chaque rendu Turbo (y compris depuis le cache)
-document.addEventListener("DOMContentLoaded", init);
+// lance immédiatement si le DOM est déjà prêt
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+} else {
+    init();
+}
+
+// Événements Turbo (au cas où)
 document.addEventListener("turbo:render", init);
 document.addEventListener("turbo:load", init);
 
-// 2) avant que Turbo mette la page au cache, on “nettoie” les champs pour
-//    supprimer les écouteurs et data-* afin que le prochain init rebinde proprement
+// Avant mise en cache Turbo (safe)
 document.addEventListener("turbo:before-cache", () => {
     ["trail_startCode", "trail_endCode"].forEach((id) => {
         const el = document.getElementById(id);
-        if (el) {
-            el.replaceWith(el.cloneNode(true)); // enlève listeners + data-bound
-        }
+        if (el) el.replaceWith(el.cloneNode(true));
     });
 });

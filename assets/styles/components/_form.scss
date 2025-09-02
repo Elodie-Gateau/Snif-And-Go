@@ -3,7 +3,8 @@
 
 .register__form-item,
 .login__form-item,
-.add-dog__item {
+.add-dog__item,
+.add-trail__form-item {
     display: flex;
     width: 100%;
     align-items: center;
@@ -22,7 +23,8 @@
 .register__form-input,
 .login__form-input,
 .home-user__trail--search-input,
-.add-dog__form-input {
+.add-dog__form-input,
+.add-trail__form-input {
     @include form-input(var(--border-color), var(--background-input));
     width: auto;
 }
@@ -50,7 +52,8 @@
 .register__form-label,
 .login__form-label,
 .home-user__trail--search-label,
-.add-dog__form-label {
+.add-dog__form-label,
+.add-trail__form-label {
     @include form-label(var(--text));
     width: 45%;
 }
@@ -58,12 +61,19 @@
 .register__form-error,
 .login__form-error,
 .home-user__trail-search--advanced-error,
-.add-dog__form-error {
+.add-dog__form-error,
+.add-trail__form_error {
     @include form-error($color-error);
 }
 
 .walk-register__desc-select {
     @include form-multiselect(var(--border-color), var(--background-input));
+}
+
+.add-trail__form-input-select {
+    display: flex;
+    flex-direction: row;
+    gap: $size-6;
 }
 
 .add-dog__form-dateselect {

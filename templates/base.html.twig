@@ -17,8 +17,9 @@
 				{{ importmap('app') }}
 			{% endblock %}
 		{% endblock %}
+
 	</head>
-	<body>
+	<body data-turbo="false">
 		{% block header %}
 			{% include 'layout/header.html.twig' %}
 		{% endblock %}

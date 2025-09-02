@@ -3,10 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Dog;
-use App\Entity\DogBreed;
-use App\Entity\User;
-use App\Repository\DogBreedRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

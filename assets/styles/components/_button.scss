@@ -8,7 +8,8 @@
 .home-user__trail-search--button,
 .home-user__trail-button,
 .walk-register__button,
-.add-dog__form-submit {
+.add-dog__form-submit,
+.add-trail__form-submit {
     @include button(
         var(--background-button),
         var(--background-button-hover),
