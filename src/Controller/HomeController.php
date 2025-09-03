@@ -37,7 +37,7 @@ final class HomeController extends AbstractController
             }
         } else {
             $dogs = [];
-            $dogNextWalk = "";
+            $dogNextWalks = "";
         }
 
 
