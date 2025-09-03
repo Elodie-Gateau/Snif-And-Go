@@ -25,13 +25,13 @@ class Trail
     #[ORM\Column(nullable: true)]
     private ?float $duration = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $difficulty = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $score = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $water_point = null;
 
     #[ORM\ManyToOne(inversedBy: 'trails')]
@@ -95,10 +95,14 @@ class Trail
     #[ORM\Column(nullable: true)]
     private ?float $endLon = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $Status = null;
+
     public function __construct()
     {
         $this->walks = new ArrayCollection();
         $this->photos = new ArrayCollection();
+        $this->Status = "Active";
     }
 
     private function normalize(string $value): string
@@ -436,6 +440,18 @@ class Trail
     public function setEndLon(?float $endLon): static
     {
         $this->endLon = $endLon;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->Status;
+    }
+
+    public function setStatus(string $Status): static
+    {
+        $this->Status = $Status;
 
         return $this;
     }

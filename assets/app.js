@@ -3,6 +3,7 @@ import { initCityAutocomplete } from "./js/cities.js";
 
 import "./styles/app.css";
 import "./js/trail-search.js";
+import "./js/newTrail.js";
 
 function init() {
     // ne bind que si le formulaire est présent

@@ -15,6 +15,11 @@ class Photo
 
     #[ORM\Column]
     private ?\DateTime $date = null;
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+    }
+
 
     #[ORM\ManyToOne(inversedBy: 'photos')]
     #[ORM\JoinColumn(nullable: false)]

@@ -1,47 +1,138 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Trail{% endblock %}
+{% block title %}Itinéraire
+{% endblock %}
 
 {% block body %}
-    <h1>Trail</h1>
+	<section class="trail">
+		<h1 class="trail__title">{{ trail.name }}</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ trail.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ trail.name }}</td>
-            </tr>
-            <tr>
-                <th>Distance</th>
-                <td>{{ trail.distance }}</td>
-            </tr>
+<div class="trail__desc">
+		{% if trail.photos and trail.photos|length > 0 %}
+			<div class="trail__desc-item">
+				<img class="home-user__trail-photo" src="{{ asset('uploads/images/' ~ trail.photos[0].name) }}" alt="Photo de l'itinéraire {{ trail.name }}">
+			</div>
+		{% endif %}
 
-            <tr>
-                <th>Duration</th>
-                <td>{{ trail.duration }}</td>
-            </tr>
-            <tr>
-                <th>Difficulty</th>
-                <td>{{ trail.difficulty }}</td>
-            </tr>
-            <tr>
-                <th>Score</th>
-                <td>{{ trail.score }}</td>
-            </tr>
-            <tr>
-                <th>Water_point</th>
-                <td>{{ trail.waterPoint }}</td>
-            </tr>
-        </tbody>
-    </table>
 
-    <a href="{{ path('app_trail_index') }}">back to list</a>
+		<div class="trail__desc-item">
+			<p class="trail__desc-title">Distance</p>
+			<p class="trail__desc-content">{{ trail.distance }}
+				km{{ trail.distance > 1 ? "s" : "" }}</p>
+		</div>
+		<div class="trail__desc-item">
+			<p class="trail__desc-title">Durée</p>
+			<p class="trail__desc-content">{% import 'macros/duration.html.twig' as dur %}
+				{{ dur.minutes(trail.duration) }}</p>
+		</div>
+		{% if trail.difficulty %}
+			<div class="trail__desc-item">
+				<p class="trail__desc-title">Difficulté</p>
+				<p class="trail__desc-content">{{ trail.difficulty }}</p>
+			</div>
+		{% endif %}
+		{% if trail.score %}
+			<div class="trail__desc-item">
+				<p class="trail__desc-title">Note</p>
+				<p class="trail__desc-content">{{ trail.score }}</p>
+			</div>
+		{% endif %}
 
-    <a href="{{ path('app_trail_edit', {'id': trail.id}) }}">edit</a>
+		<div class="trail__desc-item">
+			<p class="trail__desc-title">Point d'eau</p>
+			<p class="trail__desc-content">{{ trail.waterPoint ? trail.waterPoint : "Inconnu" }}</p>
+		</div>
 
-    {{ include('trail/_delete_form.html.twig') }}
+		<div class="trail__desc-item">
+			<p class="trail__desc-title">Point de départ</p>
+			<div class="trail__wrapper">
+				<p class="trail__desc-content">{{ trail.startAddress }}</p>
+				<p class="trail__desc-content">{{ trail.startCode }}</p>
+				<p class="trail__desc-content">{{ trail.startCity }}</p>
+			</div>
+		</div>
+		<div class="trail__desc-item">
+			<p class="trail__desc-title">Point d'arrivée</p>
+			<div class="trail__wrapper">
+				<p class="trail__desc-content">{{ trail.endAddress }}</p>
+				<p class="trail__desc-content">{{ trail.endCode }}</p>
+				<p class="trail__desc-content">{{ trail.endCity }}</p>
+			</div>
+		</div>
+		<div class="trail__desc-item">
+			{% if trail.gpxFile %}
+				<a class="trail__desc-link" href="{{ asset('uploads/gpx/' ~ trail.gpxFile) }}" download>
+					Télécharger le fichier GPX
+					{{ ux_icon('material-symbols:download-rounded', {class: 'trail__icon'}) }}
+				</a>
+			{% endif %}
+		</div>
+<div id="map" style="height: 400px;"></div>
+
+{% block javascripts %}
+  {{ parent() }}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Charge le fichier GPX stocké pour le trail
+        const gpxUrl = "{{ asset('uploads/gpx/' ~ trail.gpxFile) }}";
+        new L.GPX(gpxUrl, {
+            async: true,
+            marker_options: {
+                startIconUrl: 'https://unpkg.com/leaflet-gpx/pin-icon-start.png',
+                endIconUrl: 'https://unpkg.com/leaflet-gpx/pin-icon-end.png',
+                shadowUrl: 'https://unpkg.com/leaflet-gpx/pin-shadow.png'
+            }
+        }).on('loaded', function(e) {
+            map.fitBounds(e.target.getBounds());
+        }).addTo(map);
+    });
+  </script>
+{% endblock %}
+
+		{% if trail.photos and trail.photos|length > 1 %}
+			<div class="trail__desc-item">
+				<p class="trail__desc-title">Photos</p>
+				<div class="trail__wrapper">
+					{% for photo in trail.photos %}
+						<img class="trail__photo" src="{{ asset('uploads/images/' ~ photo.name) }}" alt="Photo de l'itinéraire {{ photo.name }}">
+					{% endfor %}
+				</div>
+			</div>
+		{% endif %}
+
+		<div class="trail__desc-item">
+			<p class="trail__desc-title">Téléchargez vos photos</p>
+			{{ form_start(form, { attr: { class: 'trail__form' } }) }}
+
+			{{ form_widget(form.photoFiles) }}
+			<div class="trail__form_error">
+				{{ form_errors(form.photoFiles) }}
+			</div>
+
+			<button type="submit" class="trail__form-submit">Valider</button>
+
+			{{ form_end(form) }}
+
+			<a class="trail__button" href="{{ path('app_walk_new', { trailId: trail.id }) }}">Programmer une balade</a>
+		</div>
+</div>
+
+		{% if app.user and app.user == trail.user %}
+			<a class="trail__button" href="{{ path('app_trail_edit', {'id': trail.id}) }}">Modifier</a>
+			<form method="post" action="{{ path('app_trail_inactive', { id: trail.id }) }}">
+				<button type="submit" class="trail__button">Supprimer</button>
+			</form>
+
+		{% endif %}
+
+		<a class="trail__back" href="{{ path('app_trail_index') }}">Retour</a>
+	</section>
 {% endblock %}

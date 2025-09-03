@@ -2,6 +2,7 @@
 
 .walk-register__back,
 .add-dog__back,
-.add-trail__back {
+.add-trail__back,
+.trail__back {
     @include back;
 }

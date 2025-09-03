@@ -1,4 +1,5 @@
 @use "../utils/mixins" as *;
+@use "../utils/variables" as *;
 
 .cta__button,
 .register__form-submit,
@@ -9,9 +10,19 @@
 .home-user__trail-button,
 .walk-register__button,
 .add-dog__form-submit,
-.add-trail__form-submit {
+.add-trail__form-submit,
+.trail__button,
+.trail__form-submit {
     @include button(
         var(--background-button),
+        var(--background-button-hover),
+        var(--text-button)
+    );
+}
+
+.trail__form-submit {
+    @include button(
+        $color-accent,
         var(--background-button-hover),
         var(--text-button)
     );

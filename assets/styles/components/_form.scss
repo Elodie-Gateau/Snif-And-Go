@@ -9,8 +9,8 @@
     width: 100%;
     align-items: center;
     flex-wrap: wrap;
-    padding: $size-10 0;
-    gap: $size-4;
+    padding: $size-20 0 $size-10 0;
+    gap: $size-10;
 }
 
 .home-user__trail-search--advanced-item {
@@ -23,10 +23,14 @@
 .register__form-input,
 .login__form-input,
 .home-user__trail--search-input,
-.add-dog__form-input,
-.add-trail__form-input {
+.add-dog__form-input {
     @include form-input(var(--border-color), var(--background-input));
     width: auto;
+}
+
+.add-trail__form-input {
+    @include form-input(var(--border-color), var(--background-input));
+    width: 100%;
 }
 
 #dog_birth_date_day,
@@ -52,10 +56,15 @@
 .register__form-label,
 .login__form-label,
 .home-user__trail--search-label,
-.add-dog__form-label,
-.add-trail__form-label {
+.add-dog__form-label {
     @include form-label(var(--text));
     width: 45%;
+}
+
+.add-trail__form-label {
+    @include form-label(var(--text));
+    width: 100%;
+    font-weight: 600;
 }
 
 .register__form-error,
@@ -73,7 +82,17 @@
 .add-trail__form-input-select {
     display: flex;
     flex-direction: row;
-    gap: $size-6;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: $size-4;
+}
+
+.add-trail__form-input-select > :nth-child(odd) {
+    width: 5%;
+    margin-top: $size-6;
+}
+.add-trail__form-input-select > :nth-child(even) {
+    width: 40%;
 }
 
 .add-dog__form-dateselect {

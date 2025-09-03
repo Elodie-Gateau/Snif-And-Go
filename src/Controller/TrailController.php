@@ -15,6 +15,10 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Service\GeocodingService;
 use App\Service\DistanceService;
 use App\Service\GpxService;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+
+use Symfony\Component\Validator\Constraints\File as FileConstraint;
+use Symfony\Component\Validator\Constraints\All;
 
 
 
@@ -35,8 +39,7 @@ final class TrailController extends AbstractController
         GeocodingService $geocoding,
         DistanceService $distanceService,
         GpxService $gpx,
-        SluggerInterface $slugger,
-        TrailRepository $trailRepository
+        SluggerInterface $slugger
     ): Response {
         // On prérempli le user avec l'user connecté
         $user = $this->getUser();
@@ -47,6 +50,21 @@ final class TrailController extends AbstractController
         $form = $this->createForm(TrailType::class, $trail)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            if ($images = $form->get('photoFiles')->getData()) {
+                foreach ($images as $image) {
+                    $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $image->guessExtension();
+                    $image->move($this->getParameter('images_directory'), $newFilename);
+                    $photo = new Photo;
+                    $photo->setName($newFilename);
+                    $photo->setUser($this->getUser());
+                    $photo->setTrail($trail);
+                    $trail->addPhoto($photo);
+                }
+            }
+
 
             // On vérifie quel mode d'entrée des données est choisi : manuel ou fichier gpx
             $mode = $trail->getInputMode();
@@ -152,11 +170,63 @@ final class TrailController extends AbstractController
     }
 
 
-    #[Route('/{id}', name: 'app_trail_show', methods: ['GET'])]
-    public function show(Trail $trail): Response
-    {
+    #[Route('/{id}', name: 'app_trail_show', methods: ['GET', 'POST'])]
+    public function show(
+        Request $request,
+        Trail $trail,
+        EntityManagerInterface $em,
+        SluggerInterface $slugger
+    ): Response {
+        $form = $this->createFormBuilder()
+            ->add('photoFiles', FileType::class, [
+                'label' => 'Téléchargez vos photos',
+                'label_attr' => ['class' => 'trail__desc-title'],
+                'mapped' => false,
+                'multiple' => true,
+                'required' => false,
+                'attr' => ['accept' => 'image/*'],
+                'constraints' => [
+                    new All([
+                        new FileConstraint([
+                            'maxSize' => '5M',
+                            'mimeTypes' => ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
+                            'mimeTypesMessage' => 'Formats acceptés : jpg, png, webp, gif',
+                        ])
+                    ])
+                ],
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $images = $form->get('photoFiles')->getData();
+
+            foreach ($images as $image) {
+                $original = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                $safe = $slugger->slug($original);
+                $filename = $safe . '-' . uniqid() . '.' . $image->guessExtension();
+
+                $image->move($this->getParameter('images_directory'), $filename);
+
+                $photo = new Photo();
+                $photo->setName($filename);
+                $photo->setUser($this->getUser());
+                $photo->setTrail($trail);
+
+                $trail->addPhoto($photo);
+                $em->persist($photo);
+            }
+
+            $em->flush();
+
+
+            return $this->redirectToRoute('app_trail_show', ['id' => $trail->getId()]);
+        }
+
         return $this->render('trail/show.html.twig', [
             'trail' => $trail,
+            'form'  => $form->createView(), // on passe la view du mini-form
         ]);
     }
 
@@ -178,6 +248,15 @@ final class TrailController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/inactive', name: 'app_trail_inactive', methods: ['POST'])]
+    public function inactive(Request $request, Trail $trail, EntityManagerInterface $entityManager): Response
+    {
+        $trail->setStatus("Inactive");
+        $entityManager->flush();
+
+
+        return $this->redirectToRoute('app_home');
+    }
     #[Route('/{id}', name: 'app_trail_delete', methods: ['POST'])]
     public function delete(Request $request, Trail $trail, EntityManagerInterface $entityManager): Response
     {

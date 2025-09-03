@@ -44,26 +44,38 @@ final class GpxService
 
 
         if ($route) {
-            $distance = $route['distance_m'];
-            $duration = $route['duration_s'];
-        } else {
-            // si la méthode OSRM n'a pas fonctionné on applique une somme de distance calculées via la méthode haversine
-            $distance = 0;
-            $prev = $points[0];
-            $prevLat = (float) $prev['lat'];
-            $prevLon = (float) $prev['lon'];
-
-            for ($i = 1, $n = count($points); $i < $n; $i++) {
-                $cur = $points[$i];
-                $lat = (float) $cur['lat'];
-                $lon = (float) $cur['lon'];
-
-                $distance += $this->distanceService->haversine($prevLat, $prevLon, $lat, $lon);
-                $prevLat = $lat;
-                $prevLon = $lon;
-            }
-            $duration = $this->distanceService->estimateMinutesFromKm($distance);
+            $distanceOsrm = $route['distance_m'];
+            $durationOsrm = $route['duration_s'];
         }
+        // si la méthode OSRM n'a pas fonctionné on applique une somme de distance calculées via la méthode haversine
+        $distanceHav = 0;
+        $prev = $points[0];
+        $prevLat = (float) $prev['lat'];
+        $prevLon = (float) $prev['lon'];
+
+        for ($i = 1, $n = count($points); $i < $n; $i++) {
+            $cur = $points[$i];
+            $lat = (float) $cur['lat'];
+            $lon = (float) $cur['lon'];
+
+            $distanceHav += $this->distanceService->haversine($prevLat, $prevLon, $lat, $lon);
+            $prevLat = $lat;
+            $prevLon = $lon;
+        }
+        $durationHav = $this->distanceService->estimateMinutesFromKm($distanceHav / 1000);
+
+
+        if ($distanceOsrm > $distanceHav) {
+            $distance = $distanceOsrm;
+        } else {
+            $distance = $distanceHav;
+        }
+        if ($durationOsrm > $durationHav) {
+            $duration = $durationOsrm;
+        } else {
+            $duration = $durationHav * 60;
+        }
+
 
 
 

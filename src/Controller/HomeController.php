@@ -31,7 +31,9 @@ final class HomeController extends AbstractController
             $dogs = $dogRepository->findByUser($currentUser);
             foreach ($dogs as $dog) {
                 $wr = $walkRegistrationRepository->findNextWalkByDog($dog, $currentUser);
-                $dogNextWalks[$dog->getId()] = $wr;
+                if ($wr) {
+                    $dogNextWalks[$dog->getId()] = $wr;
+                }
             }
         } else {
             $dogs = [];

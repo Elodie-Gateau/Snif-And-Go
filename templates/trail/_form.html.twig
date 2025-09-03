@@ -1,5 +1,9 @@
 {{ form_start(form, { attr: { class: 'add-trail__form' } }) }}
-
+{% if form_errors(form) %}
+  <div class="form__global-errors">
+    {{ form_errors(form) }}
+  </div>
+{% endif %}
 
 <div class="add-trail__form-item">
 	{{ form_label(form.name) }}
@@ -21,7 +25,7 @@
 	</div>
 </div>
 
-<div data-section="gpx" class="trail-form__section">
+<div data-section="gpx" class="add-trail__form-section">
 
 	{{ form_label(form.gpxFile) }}
 	{{ form_widget(form.gpxFile) }}
@@ -32,7 +36,7 @@
 	</div>
 </div>
 
-<div data-section="manual" class="trail-form__section">
+<div data-section="manual" class="add-trail__form-section hidden">
 	<fieldset class="trail-form__group">
 		<legend>Point de départ</legend>
 		<div class="add-trail__form-item">
@@ -114,6 +118,16 @@
 		<div class="add-trail__form_error">
 			{% if form_errors(form.water_point) %}
 				{{ form_errors(form.water_point) }}
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="add-trail__form-item">
+		{{ form_label(form.difficulty) }}
+		{{ form_widget(form.difficulty) }}
+		<div class="add-trail__form_error">
+			{% if form_errors(form.difficulty) %}
+				{{ form_errors(form.difficulty) }}
 			{% endif %}
 		</div>
 	</div>

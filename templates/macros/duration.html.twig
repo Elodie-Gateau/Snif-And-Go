@@ -1,0 +1,6 @@
+{% macro minutes(mins) %}
+  {% set mins = mins|round(0, 'floor') %}
+  {% set h = mins // 60 %}
+  {% set m = mins % 60 %}
+  {{ h }}h{{ '%02d'|format(m) }}
+{% endmacro %}

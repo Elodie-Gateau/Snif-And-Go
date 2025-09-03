@@ -21,8 +21,9 @@
 					km{{ walk.trail.distance > 1 ? "s" : "" }}</p>
 			</div>
 			<div class="walk-register__desc-item">
-				<p class="walk-register__desc-title">Durée (en heures)</p>
-				<p class="walk-register__desc-content">{{ walk.trail.duration| format_number(style: 'duration', locale: 'en') }}</p>
+				<p class="walk-register__desc-title">Durée</p>
+				<p class="walk-register__desc-content">{% import 'macros/duration.html.twig' as dur %}
+												{{ dur.minutes(walk.trail.duration) }}</p>
 			</div>
 			<div class="walk-register__desc-item">
 				<p class="walk-register__desc-title">Difficulté</p>
