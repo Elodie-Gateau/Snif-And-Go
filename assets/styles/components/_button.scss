@@ -12,7 +12,8 @@
 .add-dog__form-submit,
 .add-trail__form-submit,
 .trail__button,
-.trail__form-submit {
+.trail__form-submit,
+.next-walks__button {
     @include button(
         var(--background-button),
         var(--background-button-hover),
@@ -26,4 +27,11 @@
         var(--background-button-hover),
         var(--text-button)
     );
+}
+
+.trail__button-delete {
+    border: none;
+    background: none;
+    color: var(--background-button);
+    cursor: pointer;
 }

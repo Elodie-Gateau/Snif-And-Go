@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Walk;
 use App\Form\WalkType;
+use App\Repository\TrailRepository;
 use App\Repository\WalkRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,9 +24,17 @@ final class WalkController extends AbstractController
     }
 
     #[Route('/new', name: 'app_walk_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, TrailRepository $trailRepository): Response
     {
         $walk = new Walk();
+        $trailId = $request->query->getInt('trailId', 0);
+        if ($trailId > 0) {
+            $trail = $trailRepository->find($trailId);
+            if ($trail) {
+                $walk->setTrail($trail);
+            }
+        }
+
         $form = $this->createForm(WalkType::class, $walk);
         $form->handleRequest($request);
 
@@ -71,7 +80,7 @@ final class WalkController extends AbstractController
     #[Route('/{id}', name: 'app_walk_delete', methods: ['POST'])]
     public function delete(Request $request, Walk $walk, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$walk->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $walk->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($walk);
             $entityManager->flush();
         }

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Walk;
+use App\Entity\Trail;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -24,6 +25,19 @@ class WalkRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('walk')
             ->andWhere('walk.date >= :now')
             ->setParameter('now', new \DateTimeImmutable())
+            ->orderBy('walk.date', 'ASC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findNextByTrail(int $limit = 10, Trail $trail): array
+    {
+        return $this->createQueryBuilder('walk')
+            ->andWhere('walk.date >= :today')
+            ->andWhere('walk.trail = :trail')
+            ->setParameter('today', new \DateTimeImmutable('today'))
+            ->setParameter('trail', $trail)
             ->orderBy('walk.date', 'ASC')
             ->setMaxResults($limit)
             ->getQuery()

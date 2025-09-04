@@ -68,3 +68,8 @@
         width: $size-20;
     }
 }
+
+.next-walks__card {
+    @include card(100%);
+    padding: $size-10;
+}

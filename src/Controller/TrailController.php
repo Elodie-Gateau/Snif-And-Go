@@ -6,6 +6,7 @@ use App\Entity\Trail;
 use App\Entity\Photo;
 use App\Form\TrailType;
 use App\Repository\TrailRepository;
+use App\Repository\WalkRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,6 +46,7 @@ final class TrailController extends AbstractController
         $user = $this->getUser();
         $trail = new Trail();
         $trail->setUser($user);
+
 
 
         $form = $this->createForm(TrailType::class, $trail)->handleRequest($request);
@@ -175,8 +177,12 @@ final class TrailController extends AbstractController
         Request $request,
         Trail $trail,
         EntityManagerInterface $em,
-        SluggerInterface $slugger
+        SluggerInterface $slugger,
+        WalkRepository $walkRepository
     ): Response {
+        $nextWalks = $walkRepository->findNextByTrail(10, $trail);
+
+
         $form = $this->createFormBuilder()
             ->add('photoFiles', FileType::class, [
                 'label' => 'Téléchargez vos photos',
@@ -226,7 +232,8 @@ final class TrailController extends AbstractController
 
         return $this->render('trail/show.html.twig', [
             'trail' => $trail,
-            'form'  => $form->createView(), // on passe la view du mini-form
+            'form'  => $form->createView(),
+            'nextWalks' => $nextWalks
         ]);
     }
 
