@@ -1,20 +1,60 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ProfileController!{% endblock %}
+{% block title %}Mon profil
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+	<section class="profile">
+		<h1 class="profile__title">{{ app.user.title }}
+			{{ app.user.firstname }}
+			{{ app.user.name }}</h1>
+		<div class="profile__user">
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+			{% if app.user.title %}
+				<div class="profile__user-item">
+					<p class="profile__user-subtitle">Civilité</p>
+					{% set titleFull = {
+            'M': 'Monsieur',
+            'Mme' :'Madame'
+        }[app.user.title] ?? 'Non renseigné' %}
+					<p class="profile__user-content">{{ titleFull }}</p>
+				</div>
+			{% endif %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/Applications/XAMPP/xamppfiles/htdocs/arinfo/projet/snif-and-go/src/Controller/ProfileController.php</code></li>
-        <li>Your template at <code>/Applications/XAMPP/xamppfiles/htdocs/arinfo/projet/snif-and-go/templates/profile/index.html.twig</code></li>
-    </ul>
-</div>
+			<div class="profile__user-item">
+				<p class="profile__user-subtitle">Prénom</p>
+				<p class="profile__user-content">{{ app.user.firstname }}</p>
+			</div>
+			<div class="profile__user-item">
+				<p class="profile__user-subtitle">Nom</p>
+				<p class="profile__user-content">{{ app.user.name }}</p>
+			</div>
+			<div class="profile__user-item">
+				<p class="profile__user-subtitle">Adresse email</p>
+				<p class="profile__user-content">{{ app.user.email }}</p>
+			</div>
+		</div>
+
+		<div class="profile__dogs">
+			{% if dogs %}
+				{% for dog in dogs %}
+					<p>{{ dog.name }}</p>
+				{% endfor %}
+			{% endif %}
+		</div>
+		<div class="profile__trails">
+			{% if trails %}
+				{% for trail in trails %}
+					<p>{{ trail.name }}</p>
+				{% endfor %}
+			{% endif %}
+		</div>
+		<div class="profile__walks">
+			{% if walkRegistrations %}
+				{% for walkRegistration in walkRegistrations %}
+					<p>{{ walkRegistration.dateRegistration|format_datetime('full', 'short', locale: 'fr') }}</p>
+				{% endfor %}
+			{% endif %}
+		</div>
+	</section>
 {% endblock %}

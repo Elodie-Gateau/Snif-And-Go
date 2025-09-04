@@ -1,11 +1,57 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Walk{% endblock %}
+{% block title %}Nouvelle balade
+{% endblock %}
 
 {% block body %}
-    <h1>Create new Walk</h1>
+	<section class="add-walk">
+		<h1 class="add-walk__title">Programmer une balade</h1>
+		<div class="add-walk__desc">
 
-    {{ include('walk/_form.html.twig') }}
+			<div class="add-walk__desc-item">
+				<p class="add-walk__desc-title">Distance</p>
+				<p class="add-walk__desc-content">{{ trail.distance }}
+					km{{ trail.distance > 1 ? "s" : "" }}</p>
+			</div>
+			<div class="add-walk__desc-item">
+				<p class="add-walk__desc-title">Durée</p>
+				<p class="add-walk__desc-content">{% import 'macros/duration.html.twig' as dur %}
+					{{ dur.minutes(trail.duration) }}</p>
+			</div>
 
-    <a href="{{ path('app_walk_index') }}">back to list</a>
+			{% if trail.difficulty %}
+				<div class="add-walk__desc-item">
+					<p class="add-walk__desc-title">Difficulté</p>
+					<p class="add-walk__desc-content">{{ trail.difficulty }}</p>
+				</div>
+			{% endif %}
+			{% if trail.waterPoint %}
+				<div class="add-walk__desc-item">
+					<p class="add-walk__desc-title">Point d'eau</p>
+					<p class="add-walk__desc-content">{{ trail.waterPoint }}</p>
+				</div>
+			{% endif %}
+			<div class="add-walk__desc-item">
+				<p class="add-walk__desc-title">Point de départ</p>
+				<div class="add-walk__desc-wrapper">
+					<p class="add-walk__desc-content">{{ trail.startAddress }}</p>
+					<p class="add-walk__desc-content">{{ trail.startCode }}</p>
+					<p class="add-walk__desc-content">{{ trail.startCity }}</p>
+				</div>
+			</div>
+			<div class="add-walk__desc-item">
+				<p class="add-walk__desc-title">Point d'arrivée</p>
+				<div class="add-walk__desc-wrapper">
+					<p class="add-walk__desc-content">{{ trail.endAddress }}</p>
+					<p class="add-walk__desc-content">{{ trail.endCode }}</p>
+					<p class="add-walk__desc-content">{{ trail.endCity }}</p>
+				</div>
+			</div>
+
+			{{ include('walk/_form.html.twig') }}
+
+		</div>
+
+		<a class="add-walk__back" href="{{ path('app_walk_index') }}">Retour</a>
+	</section>
 {% endblock %}

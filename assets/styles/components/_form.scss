@@ -1,10 +1,21 @@
 @use "../utils/variables" as *;
 @use "../utils/mixins" as *;
 
+.add-walk_form {
+    // background: var(--background-tertiary);
+    width: 100%;
+    padding: $size-20 $size-10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $size-30;
+}
+
 .register__form-item,
 .login__form-item,
 .add-dog__item,
-.add-trail__form-item {
+.add-trail__form-item,
+.add-walk__form-item {
     display: flex;
     width: 100%;
     align-items: center;
@@ -23,7 +34,9 @@
 .register__form-input,
 .login__form-input,
 .home-user__trail--search-input,
-.add-dog__form-input {
+.add-dog__form-input,
+.add-walk__form-input,
+.add-walk__form-input-date {
     @include form-input(var(--border-color), var(--background-input));
     width: auto;
 }
@@ -67,11 +80,22 @@
     font-weight: 600;
 }
 
+.add-walk__form-label-date {
+    @include form-label(var(--text));
+    width: 40%;
+}
+
+.add-walk__form-label-number {
+    @include form-label(var(--text));
+    width: 70%;
+}
+
 .register__form-error,
 .login__form-error,
 .home-user__trail-search--advanced-error,
 .add-dog__form-error,
-.add-trail__form_error {
+.add-trail__form_error,
+.add-walk__form-error {
     @include form-error($color-error);
 }
 
@@ -85,6 +109,15 @@
     justify-content: space-between;
     align-items: flex-start;
     gap: $size-4;
+}
+
+.add-walk__form-input-number {
+    @include form-input(
+        var(--border-color),
+        var(--background-input),
+        $padding: $size-6
+    );
+    width: auto;
 }
 
 .add-trail__form-input-select > :nth-child(odd) {

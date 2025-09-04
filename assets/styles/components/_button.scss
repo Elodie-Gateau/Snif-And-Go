@@ -13,7 +13,8 @@
 .add-trail__form-submit,
 .trail__button,
 .trail__form-submit,
-.next-walks__button {
+.next-walks__button,
+.add-walk__form-submit {
     @include button(
         var(--background-button),
         var(--background-button-hover),

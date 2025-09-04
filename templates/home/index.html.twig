@@ -22,9 +22,10 @@
 
 			<div class="home-user__walk">
 				<h2 class="home-user__walk-title">Les prochaines balades disponibles</h2>
-				<div class="home-user__walk--card">
+				<div class="home-user__walk-container">
 					{% if nextWalks|length > 0 %}
 						{% for walk in nextWalks %}
+							<div class="home-user__walk--card">
 							<div class="home-user__walk-wrapper">
 								<p class="home-user__walk-accent">{{ walk.date|format_datetime('full', 'short', locale: 'fr') }}</p>
 								<p class="home-user__walk-content">
@@ -37,7 +38,7 @@
 								<p class="home-user__walk-accent">{{ walk.maxDogs - walk.walkRegistration|length }}
 									place{{ walk.maxDogs - walk.walkRegistration|length > 1 ? "s" : "" }}
 									restantes</p>
-
+								</div>
 							</div>
 						{% endfor %}
 					</div>
@@ -48,6 +49,7 @@
 				{% if nextWalks|length > 4 %}
 					<a class="btn" href="{{ path('app_walk_registration_index') }}">Voir plus</a>
 				{% endif %}
+			</div>
 			</div>
 
 			<div class="home-user__dog">

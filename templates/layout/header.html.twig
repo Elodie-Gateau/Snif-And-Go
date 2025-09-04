@@ -19,7 +19,7 @@
 				</li>
 				{% if is_granted('ROLE_USER') %}
 					<li class="site-header__item">
-						<a class="site-header__link" href="{{ path('app_profile') }}">Mon profil</a>
+						<a class="site-header__link" href="{{ path('app_profile', {'id': app.user.id}) }}">Mon profil</a>
 					</li>
 					{% if is_granted('ROLE_ADMIN') %}
 						<li class="site-header__item">

@@ -26,6 +26,7 @@ final class WalkController extends AbstractController
     #[Route('/new', name: 'app_walk_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, TrailRepository $trailRepository): Response
     {
+        $trail = null;
         $walk = new Walk();
         $trailId = $request->query->getInt('trailId', 0);
         if ($trailId > 0) {
@@ -48,6 +49,7 @@ final class WalkController extends AbstractController
         return $this->render('walk/new.html.twig', [
             'walk' => $walk,
             'form' => $form,
+            'trail' => $trail
         ]);
     }
 
@@ -74,6 +76,7 @@ final class WalkController extends AbstractController
         return $this->render('walk/edit.html.twig', [
             'walk' => $walk,
             'form' => $form,
+
         ]);
     }
 
