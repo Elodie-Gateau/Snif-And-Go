@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/admin/user', name: 'admin_user_')]
 final class AdminUserController extends AbstractController
 {
-    #[Route(name: 'admin_user_index', methods: ['GET'])]
+    #[Route(name: 'index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
         return $this->render('admin/user/index.html.twig', [
@@ -22,7 +22,7 @@ final class AdminUserController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'admin_user_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
@@ -42,7 +42,7 @@ final class AdminUserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'admin_user_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'show', methods: ['GET'])]
     public function show(User $user): Response
     {
         return $this->render('admin/user/show.html.twig', [
@@ -50,7 +50,7 @@ final class AdminUserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'admin_user_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(UserType::class, $user);
@@ -68,7 +68,7 @@ final class AdminUserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'admin_user_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->getPayload()->getString('_token'))) {

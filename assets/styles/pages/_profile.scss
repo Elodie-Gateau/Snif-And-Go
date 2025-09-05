@@ -1,0 +1,18 @@
+@use "../utils/mixins" as *;
+
+.profile {
+    @include infos-main;
+
+    &__user {
+        @include infos-desc;
+        width: 100%;
+
+        &-item {
+            @include infos-item;
+        }
+
+        &-subtitle {
+            @include infos-subtitle;
+        }
+    }
+}

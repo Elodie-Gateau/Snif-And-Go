@@ -60,4 +60,7 @@ return [
     'flatpickr/dist/l10n/fr.js' => [
         'version' => '4.6.13',
     ],
+    '@symfony/ux-autocomplete' => [
+        'version' => '2.30.0',
+    ],
 ];

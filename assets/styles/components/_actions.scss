@@ -1,0 +1,6 @@
+@use "../utils/variables" as *;
+@use "../utils/mixins" as *;
+
+.profile__trail-wrapper {
+    @include actions-wrapper;
+}

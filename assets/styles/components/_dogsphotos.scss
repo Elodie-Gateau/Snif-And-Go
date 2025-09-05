@@ -2,29 +2,14 @@
 @use "../utils/mixins" as *;
 @use "../utils/breakpoints" as *;
 
-.home-user__dog-photo-female,
-.home-user__dog-photo-male {
-    --avatar-size: $size-56;
-    width: var(--avatar-size);
-    height: var(--avatar-size);
-    aspect-ratio: 1 / 1;
-    flex: 0 0 var(--avatar-size);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.home-user__dog-photo-female,
 .walk-register__desc-photo-female {
     @include photoFemale;
 }
 
-.home-user__dog-photo-male,
 .walk-register__desc-photo-male {
     @include photoMale;
 }
 
-.home-user__dog-photo,
 .walk-register__desc-photo {
     @include photo;
     object-fit: cover;
@@ -42,4 +27,26 @@
     .home-user__dog-photo-male {
         --avatar-size: $size-88;
     }
+}
+
+.profile__walks-photo-female,
+.profile__walks-photo-male,
+.profile__dog-photo-female,
+.profile__dog-photo-male,
+.home-user__dog-photo-female,
+.home-user__dog-photo-male,
+.walk-register__dog-photo {
+    @include photo;
+}
+.profile__walks-photo-female,
+.profile__dog-photo-female,
+.home-user__dog-photo-female,
+.female {
+    @include photoFemale;
+}
+.profile__walks-photo-male,
+.home-user__dog-photo-male,
+.profile__dog-photo-male,
+.male {
+    @include photoMale;
 }

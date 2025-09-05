@@ -24,7 +24,15 @@
 
     &:hover {
         background-color: $bg-color-hover;
+        color: $text-color;
     }
+}
+
+@mixin delete-button($color) {
+    border: none;
+    background: none;
+    color: $color;
+    cursor: pointer;
 }
 
 // Mixin formulaires
@@ -74,14 +82,36 @@
 
 // Mixin cards
 
-@mixin card($width) {
+@mixin card($width, $direction, $justify, $gap) {
     width: $width;
     background: var(--background);
     display: flex;
-    justify-content: space-between;
+    flex-direction: $direction;
+    justify-content: $justify;
     align-items: center;
     border-radius: $size-10;
     box-shadow: 0 5px 8px $color-gray-175;
+    gap: $gap;
+}
+
+@mixin card-photo {
+    width: 100%;
+    max-height: 50%;
+    border-radius: $size-10;
+    color: var(--title-secondary);
+}
+
+@mixin card-desc($width, $direction, $gap) {
+    display: flex;
+    flex-direction: $direction;
+    align-items: flex-start;
+    width: $width;
+    gap: $gap;
+}
+
+@mixin card-item($gap) {
+    display: flex;
+    gap: $gap;
 }
 
 // Mixin link back
@@ -100,26 +130,86 @@
 
 @mixin photo {
     width: 100%;
-    border-radius: 50%;
     height: 100%;
+    --avatar-size: $size-56;
+    // width: var(--avatar-size);
+    // height: var(--avatar-size);
+    aspect-ratio: 1 / 1;
+    // flex: 0 0 var(--avatar-size);
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+    border-radius: 50%;
+    padding: $size-8;
+    object-fit: cover;
 }
 
 @mixin photoMale {
     border: $size-8 solid var(--title);
     color: var(--title);
-    border-radius: 50%;
-    padding: $size-8;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    // border-radius: 50%;
+    // padding: $size-8;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    // width: 100%;
 }
 
 @mixin photoFemale {
     border: $size-8 solid var(--title-secondary);
     color: var(--title-secondary);
-    border-radius: 50%;
-    padding: $size-8;
+    // border-radius: 50%;
+    // padding: $size-8;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    // width: 100%;
+}
+
+// Mixin infos
+@mixin infos-main {
+    background: var(--background-secondary);
+    border-radius: $size-10;
+    padding: $size-20 $size-10;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: $size-10;
+}
+
+@mixin infos-desc {
+    background: var(--background-tertiary);
+    padding: $size-20 $size-10;
+    display: flex;
+    flex-direction: column;
+    gap: $size-30;
+    border-radius: $size-10;
+}
+
+@mixin infos-item {
+    display: flex;
+    flex-direction: column;
+    gap: $size-10;
+    width: 100%;
+}
+
+@mixin infos-subtitle {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+// Mixin icons
+
+@mixin icon($iconColor, $size) {
+    color: $iconColor;
+    width: $size;
+}
+
+// Mixin Actions
+
+@mixin actions-wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
     align-items: center;
 }

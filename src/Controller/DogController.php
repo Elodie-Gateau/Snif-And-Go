@@ -85,6 +85,16 @@ final class DogController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/inactive', name: 'app_dog_inactive', methods: ['POST'])]
+    public function inactive(Request $request, Dog $dog, EntityManagerInterface $entityManager): Response
+    {
+        $dog->setStatus("Inactive");
+        $entityManager->flush();
+
+
+        return $this->redirectToRoute('app_profile');
+    }
+
     #[Route('/{id}', name: 'app_dog_delete', methods: ['POST'])]
     public function delete(Request $request, Dog $dog, EntityManagerInterface $entityManager): Response
     {

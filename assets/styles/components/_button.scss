@@ -14,7 +14,9 @@
 .trail__button,
 .trail__form-submit,
 .next-walks__button,
-.add-walk__form-submit {
+.add-walk__form-submit,
+.profile__button,
+.profile__trail-button {
     @include button(
         var(--background-button),
         var(--background-button-hover),
@@ -30,9 +32,7 @@
     );
 }
 
-.trail__button-delete {
-    border: none;
-    background: none;
-    color: var(--background-button);
-    cursor: pointer;
+.trail__button-delete,
+.profile__trail-button-delete {
+    @include delete-button(var(--background-button));
 }

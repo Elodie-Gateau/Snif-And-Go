@@ -16,6 +16,8 @@
 @use "components/form";
 @use "components/back";
 @use "components/dogsphotos";
+@use "components/icons";
+@use "components/actions";
 
 @use "layouts/header";
 @use "layouts/footer";
@@ -27,3 +29,4 @@
 @use "pages/newDog";
 @use "pages/newTrail";
 @use "pages/trail";
+@use "pages/profile";

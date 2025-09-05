@@ -9,7 +9,6 @@ function postalToCity(postalInputId, cityInputId, cityDatalistId) {
 
     postalInput.addEventListener("input", () => {
         const code = postalInput.value.trim();
-        console.log(code);
         if (code.length !== 5) return;
 
         fetch(

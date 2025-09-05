@@ -76,22 +76,22 @@
 				<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
 				<script>
 					document.addEventListener("DOMContentLoaded", () => {
-const map = L.map('map');
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '© OpenStreetMap contributors'}).addTo(map);
-
-// Charge le fichier GPX stocké pour le trail
-const gpxUrl = "{{ asset('uploads/gpx/' ~ trail.gpxFile) }}";
-new L.GPX(gpxUrl, {
-async: true,
-marker_options: {
-startIconUrl: 'https://unpkg.com/leaflet-gpx/pin-icon-start.png',
-endIconUrl: 'https://unpkg.com/leaflet-gpx/pin-icon-end.png',
-shadowUrl: 'https://unpkg.com/leaflet-gpx/pin-shadow.png'
-}
-}).on('loaded', function (e) {
-map.fitBounds(e.target.getBounds());
-}).addTo(map);
-});
+					const map = L.map('map');
+					L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '© OpenStreetMap contributors'}).addTo(map);
+					
+					// Charge le fichier GPX stocké pour le trail
+					const gpxUrl = "{{ asset('uploads/gpx/' ~ trail.gpxFile) }}";
+					new L.GPX(gpxUrl, {
+					async: true,
+					marker_options: {
+					startIconUrl: 'https://unpkg.com/leaflet-gpx/pin-icon-start.png',
+					endIconUrl: 'https://unpkg.com/leaflet-gpx/pin-icon-end.png',
+					shadowUrl: 'https://unpkg.com/leaflet-gpx/pin-shadow.png'
+					}
+					}).on('loaded', function (e) {
+					map.fitBounds(e.target.getBounds());
+					}).addTo(map);
+					});
 				</script>
 			{% endblock %}
 

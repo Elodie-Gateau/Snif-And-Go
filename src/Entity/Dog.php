@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\DogRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,9 +25,6 @@ class Dog
     #[ORM\Column(length: 255)]
     private ?string $sex = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $breed = null;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $identity_number = null;
 
@@ -46,9 +44,13 @@ class Dog
     #[ORM\ManyToOne(inversedBy: 'dogs')]
     private ?DogBreed $dogBreed = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $status = null;
+
     public function __construct()
     {
         $this->walk_registration = new ArrayCollection();
+        $this->status = "Active";
     }
 
     public function getId(): ?int
@@ -80,6 +82,34 @@ class Dog
         return $this;
     }
 
+    public function getAge(): ?int
+    {
+        $birthDate = $this->getBirthDate();
+        if ($birthDate) {
+            $now = new DateTime('now');
+            $bd = $birthDate->getTimestamp();
+            $nowb = $now->getTimestamp();
+            $age = ($nowb - $bd) / (365 * 24 * 60 * 60);
+            return $age;
+        } else {
+            return null;
+        }
+    }
+
+    public function getAgeM(): ?int
+    {
+        $birthDate = $this->getBirthDate();
+        if ($birthDate) {
+            $now = new DateTime('now');
+            $bd = $birthDate->getTimestamp();
+            $nowb = $now->getTimestamp();
+            $age = ($nowb - $bd) / ((365 / 12) * 24 * 60 * 60);
+            return $age;
+        } else {
+            return null;
+        }
+    }
+
     public function getSex(): ?string
     {
         return $this->sex;
@@ -88,18 +118,6 @@ class Dog
     public function setSex(string $sex): static
     {
         $this->sex = $sex;
-
-        return $this;
-    }
-
-    public function getBreed(): ?string
-    {
-        return $this->breed;
-    }
-
-    public function setBreed(string $breed): static
-    {
-        $this->breed = $breed;
 
         return $this;
     }
@@ -178,6 +196,18 @@ class Dog
     public function setDogBreed(?DogBreed $dogBreed): static
     {
         $this->dogBreed = $dogBreed;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }

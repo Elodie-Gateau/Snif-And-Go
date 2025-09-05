@@ -1,0 +1,12 @@
+@use "../utils/variables" as *;
+@use "../utils/mixins" as *;
+
+.profile__icon {
+    @include icon(var(--title), $size-22);
+}
+
+.profile__dog-delete-icon,
+.profile__trail-delete-icon,
+.profile__trail-icon {
+    @include icon(var(--accent), $size-22);
+}

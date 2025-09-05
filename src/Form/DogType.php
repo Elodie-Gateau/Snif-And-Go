@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Dog;
+use App\Entity\DogBreed;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -43,8 +45,8 @@ class DogType extends AbstractType
             ->add('sex', ChoiceType::class, [
                 'choices' => [
                     'Choisir le genre' => null,
-                    'Femelle' => 'Female',
-                    'Mâle' => 'Male'
+                    'Femelle' => 'female',
+                    'Mâle' => 'male'
                 ],
                 'attr' => ['class' => 'add-dog__form-input'],
                 'label' => 'Genre :',
@@ -55,7 +57,14 @@ class DogType extends AbstractType
                     ])
                 ],
             ])
-            ->add('dogBreed', DogBreedAutocompleteField::class)
+            // ->add('dogBreed', DogBreedAutocompleteField::class)
+
+            ->add('dogBreed', EntityType::class, [
+                'class' => DogBreed::class,
+                'choice_label' => 'name_fr',
+                'placeholder' => 'Saisir une race',
+                'autocomplete' => true
+            ])
 
             ->add(
                 'identity_number',

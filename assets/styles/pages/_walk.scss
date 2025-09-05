@@ -1,33 +1,16 @@
 @use "../utils/variables" as *;
+@use "../utils/mixins" as *;
 
 .walk-register,
 .add-walk {
-    background: var(--background-secondary);
-    border-radius: $size-10;
-    padding: $size-20 $size-10;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: $size-10;
-
-    &__title {
-        padding: $size-30 0;
-    }
+    @include infos-main;
 
     &__desc {
-        background: var(--background-tertiary);
-        padding: $size-20 $size-10;
-        display: flex;
-        flex-direction: column;
-        gap: $size-30;
-        border-radius: $size-10;
+        @include infos-desc;
     }
 
     &__desc-item {
-        display: flex;
-        flex-direction: column;
-        gap: $size-10;
-        width: 100%;
+        @include infos-item;
     }
 
     &__desc-title {

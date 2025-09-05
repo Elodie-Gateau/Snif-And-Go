@@ -23,7 +23,7 @@
 					</li>
 					{% if is_granted('ROLE_ADMIN') %}
 						<li class="site-header__item">
-							<a class="site-header__link" href="{{ path('app_admin') }}">Espace Administrateur</a>
+							<a class="site-header__link" href="{{ path('admin_user_index') }}">Espace Administrateur</a>
 						</li>
 					{% endif %}
 					<li class="site-header__item">

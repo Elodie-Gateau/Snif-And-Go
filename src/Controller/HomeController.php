@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Validator\Constraints\Length;
 
 final class HomeController extends AbstractController
 {
@@ -29,15 +30,22 @@ final class HomeController extends AbstractController
 
         if ($currentUser) {
             $dogs = $dogRepository->findByUser($currentUser);
-            foreach ($dogs as $dog) {
-                $wr = $walkRegistrationRepository->findNextWalkByDog($dog, $currentUser);
-                if ($wr) {
-                    $dogNextWalks[$dog->getId()] = $wr;
+            if ($dogs && count($dogs) > 0) {
+                foreach ($dogs as $dog) {
+                    $wr = $walkRegistrationRepository->findNextWalkByDog($dog, $currentUser);
+                    if ($wr) {
+                        $dogNextWalks[$dog->getId()] = $wr;
+                    } else {
+                        $dogNextWalks = [];
+                    }
                 }
+            } else {
+                $dogs = [];
+                $dogNextWalks = [];
             }
         } else {
             $dogs = [];
-            $dogNextWalks = "";
+            $dogNextWalks = [];
         }
 
 

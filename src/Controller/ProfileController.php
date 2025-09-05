@@ -24,6 +24,7 @@ final class ProfileController extends AbstractController
 
         $walkRegistrations = [];
         foreach ($dogs as $dog) {
+
             $wrs = $dog->getWalkRegistration();
             foreach ($wrs as $wr) {
                 $walkRegistrations[] = $wr;

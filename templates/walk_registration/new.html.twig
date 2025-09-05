@@ -23,7 +23,7 @@
 			<div class="walk-register__desc-item">
 				<p class="walk-register__desc-title">Durée</p>
 				<p class="walk-register__desc-content">{% import 'macros/duration.html.twig' as dur %}
-												{{ dur.minutes(walk.trail.duration) }}</p>
+					{{ dur.minutes(walk.trail.duration) }}</p>
 			</div>
 			<div class="walk-register__desc-item">
 				<p class="walk-register__desc-title">Difficulté</p>
@@ -60,13 +60,12 @@
 					{% if walk.walkRegistration|length > 0 %}
 						{% for register in walk.walkRegistration %}
 							<div class="walk-register__desc-container">
-								<div class="walk-register__desc-photo{{ register.dog.sex == " female"? " -female": " -male"}}">
+								{% set dogPhotoClass = ['walk-register__dog-photo', register.dog.sex] | join(' ') %}
 									{% if register.dog.photo %}
-										<img class="walk-register__desc-photo" src="{{ asset('uploads/images/' ~ register.dog.photo)}}">
-									{% else %}
-										{{ux_icon('streamline-plump:dog-1-remix', {class: 'walk-register__desc-photo'})}}
-									{% endif %}
-								</div>
+									<img class="{{ dogPhotoClass }}" src="{{ asset('uploads/images/' ~ register.dog.photo)}}">
+								{% else %}
+									{{ ux_icon('streamline-plump:dog-1-remix', { class: dogPhotoClass }) }}
+								{% endif %}
 								<p class="walk-register__desc-content">{{ register.dog.name }}</p>
 							</div>
 						{% endfor %}
